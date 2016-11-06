@@ -9,6 +9,7 @@ import java.util.Locale;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     //동적으로 변화하는 달력을 위해 현재 연,월을 저장힉 위한 변수
     private int Year;
     private int Month;
+    //오늘 날짜를 가지는 변수 (동적으로 변하는 변수가 아님)
+    private int original_month;
     /**
      * 그리드뷰
      */
@@ -70,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
         //현재 날짜 텍스트뷰에 뿌려줌
         Year = Integer.parseInt(curYearFormat.format(date));
+        original_month =Integer.parseInt(curMonthFormat.format(date));
         Month =Integer.parseInt(curMonthFormat.format(date));
 
         tvDate.setText(Year + "/" + Month);
@@ -255,12 +259,20 @@ public class MainActivity extends AppCompatActivity {
             holder.tvItemGridView.setText("" + getItem(position));
 
             //해당 날짜 텍스트 컬러,배경 변경
-
+           SimpleDateFormat this_month = new SimpleDateFormat("MM", Locale.KOREA);
             mCal = Calendar.getInstance();
             //오늘 day 가져
             Integer today = mCal.get(Calendar.DAY_OF_MONTH);
             String sToday = String.valueOf(today);
+            if (sToday.equals(getItem(position)) && Month ==original_month ) { //오늘 day 텍스트 컬러 변경
 
+                holder.tvItemGridView.setTextColor(getResources().getColor(R.color.color_000000));
+
+            }
+            else{
+                String strColor = "#000000";
+                holder.tvItemGridView.setTextColor(Color.parseColor(strColor));
+            }
             return convertView;
         }
     }
