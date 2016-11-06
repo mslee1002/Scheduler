@@ -112,7 +112,62 @@ public class MainActivity extends AppCompatActivity {
         Button btn_next = (Button)findViewById(R.id.next);
 
 
+        //이전 달 달력 갱신
+        btn_before.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Month = Month -1;
+                tvDate.setText(Year + "/" + Month);
 
+                dayList.clear();
+                dayList.add("일");
+                dayList.add("월");
+                dayList.add("화");
+                dayList.add("수");
+                dayList.add("목");
+                dayList.add("금");
+                dayList.add("토");
+                mCal = Calendar.getInstance();
+                    mCal.set(Year, Month - 1, 1);
+                    int dayNum = mCal.get(Calendar.DAY_OF_WEEK);
+            //1일 - 요일 매칭 시키기 위해 공백 add
+                for (int i = 1; i < dayNum; i++) {
+                        dayList.add("");
+                    }
+                    setCalendarDate(mCal.get(Calendar.MONTH) + 1);
+                    gridAdapter.notifyDataSetChanged();
+
+            }
+        });
+
+        //다음 달 달력 갱신
+
+        btn_next.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Month = Month +1;
+                tvDate.setText(Year + "/" + Month);
+
+                dayList.clear();
+                dayList.add("일");
+                dayList.add("월");
+                dayList.add("화");
+                dayList.add("수");
+                dayList.add("목");
+                dayList.add("금");
+                dayList.add("토");
+                mCal = Calendar.getInstance();
+                mCal.set(Year, Month - 1, 1);
+                int dayNum = mCal.get(Calendar.DAY_OF_WEEK);
+                //1일 - 요일 매칭 시키기 위해 공백 add
+                for (int i = 1; i < dayNum; i++) {
+                    dayList.add("");
+                }
+                setCalendarDate(mCal.get(Calendar.MONTH) + 1);
+                gridAdapter.notifyDataSetChanged();
+
+            }
+        });
     }
 
     @Override
