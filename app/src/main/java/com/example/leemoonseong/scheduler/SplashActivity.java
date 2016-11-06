@@ -1,6 +1,7 @@
 package com.example.leemoonseong.scheduler;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.ProgressBar;
@@ -22,7 +23,10 @@ public class SplashActivity extends Activity {
 
             @Override
             public void run() {
-                finish();       // 2 초후 이미지를 닫아버림
+                /* 메인액티비티를 실행하고 로딩화면을 죽인다.*/
+                Intent mainIntent = new Intent(SplashActivity.this,MainActivity.class);
+                SplashActivity.this.startActivity(mainIntent);
+                SplashActivity.this.finish();
             }
         }, 2000);
 
