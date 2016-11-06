@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         original_month =Integer.parseInt(curMonthFormat.format(date));
         Month =Integer.parseInt(curMonthFormat.format(date));
 
-        tvDate.setText(Year + "/" + Month);
+        tvDate.setText(Year +"년  " + Month +"월");
 
 
         //gridview 요일 표시
@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 Month = Month -1;
-                tvDate.setText(Year + "/" + Month);
+
 
                 dayList.clear();
                 dayList.add("일");
@@ -133,6 +133,11 @@ public class MainActivity extends AppCompatActivity {
                 dayList.add("금");
                 dayList.add("토");
                 mCal = Calendar.getInstance();
+                if(Month ==0){
+                    Year = Year -1;
+                    Month = 12;
+                }
+                    tvDate.setText(Year +"년  " + Month +"월");
                     mCal.set(Year, Month - 1, 1);
                     int dayNum = mCal.get(Calendar.DAY_OF_WEEK);
             //1일 - 요일 매칭 시키기 위해 공백 add
@@ -151,7 +156,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 Month = Month +1;
-                tvDate.setText(Year + "/" + Month);
 
                 dayList.clear();
                 dayList.add("일");
@@ -162,6 +166,13 @@ public class MainActivity extends AppCompatActivity {
                 dayList.add("금");
                 dayList.add("토");
                 mCal = Calendar.getInstance();
+
+                if(Month ==13)
+                {
+                    Year = Year + 1;
+                    Month = 1;
+                }
+                tvDate.setText(Year +"년  " + Month +"월");
                 mCal.set(Year, Month - 1, 1);
                 int dayNum = mCal.get(Calendar.DAY_OF_WEEK);
                 //1일 - 요일 매칭 시키기 위해 공백 add
@@ -265,13 +276,13 @@ public class MainActivity extends AppCompatActivity {
             Integer today = mCal.get(Calendar.DAY_OF_MONTH);
             String sToday = String.valueOf(today);
             if (sToday.equals(getItem(position)) && Month ==original_month ) { //오늘 day 텍스트 컬러 변경
-
-                holder.tvItemGridView.setTextColor(getResources().getColor(R.color.color_000000));
+                String strColor1 = "#FF0000";
+                holder.tvItemGridView.setTextColor(Color.parseColor(strColor1));
 
             }
             else{
-                String strColor = "#000000";
-                holder.tvItemGridView.setTextColor(Color.parseColor(strColor));
+                String strColor2 = "#000000";
+                holder.tvItemGridView.setTextColor(Color.parseColor(strColor2));
             }
             return convertView;
         }
