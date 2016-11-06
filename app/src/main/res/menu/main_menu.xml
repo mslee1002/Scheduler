@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/add_schedule"
+        android:title="일정 추가"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/view_month"
+        android:title="월별 보기"/>
+    <item
+        android:id="@+id/view_week"
+        android:title="주별 보기"/>
+    <item
+        android:id="@+id/view_day"
+        android:title="일별 보기"/>
+</menu>
