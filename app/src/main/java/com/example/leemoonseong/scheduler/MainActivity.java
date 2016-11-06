@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Locale;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
      * 일 저장 할 리스트
      */
     private ArrayList<String> dayList;
+    //동적으로 변화하는 달력을 위해 현재 연,월을 저장힉 위한 변수
     private int Year;
     private int Month;
     /**
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        startActivity(new Intent(this,SplashActivity.class));
         tvDate = (TextView) findViewById(R.id.tv_date);
         gridView = (GridView) findViewById(R.id.gridview);
 
