@@ -14,7 +14,11 @@ public class WeeklyFragment extends Fragment {
     public WeeklyFragment() {
         // Required empty public constructor
     }
-
+    @Override
+    public void onResume(){
+        super.onResume();
+        ((MainActivity) getActivity()).setActionBarTitle("주별 보기");
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

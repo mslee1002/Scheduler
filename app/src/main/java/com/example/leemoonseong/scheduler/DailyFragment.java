@@ -14,7 +14,11 @@ public class DailyFragment extends Fragment {
     public DailyFragment() {
         // Required empty public constructor
     }
-
+    @Override
+    public void onResume(){
+        super.onResume();
+        ((MainActivity) getActivity()).setActionBarTitle("일별 보기");
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
