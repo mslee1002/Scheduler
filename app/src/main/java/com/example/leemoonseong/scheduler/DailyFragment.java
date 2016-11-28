@@ -9,9 +9,9 @@ import android.view.ViewGroup;
 /**
  * Created by Hosea on 2016-11-28.
  */
-public class WeeklyFragment extends Fragment {
+public class DailyFragment extends Fragment {
 
-    public WeeklyFragment() {
+    public DailyFragment() {
         // Required empty public constructor
     }
 
@@ -20,7 +20,7 @@ public class WeeklyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_weekly, container, false);
+        return inflater.inflate(R.layout.fragment_daily, container, false);
     }
 
 }
