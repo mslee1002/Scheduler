@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     final MonthlyFragment monthlyFragment = new MonthlyFragment();
     final WeeklyFragment weeklyFragment = new WeeklyFragment();
     final DailyFragment dailyFragment = new DailyFragment();
-    FragmentManager fm;
+    FragmentManager fm =getFragmentManager();
 
     public void setActionBarTitle(String title){
         getSupportActionBar().setTitle(title);
@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
     protected void switchFragment(int id) {
         final FragmentTransaction fragmentTransaction =
                 getFragmentManager().beginTransaction();
-        fm = getFragmentManager();
         if (id == 0) {
             fragmentTransaction.replace(R.id.fragment, monthlyFragment).addToBackStack(null);
         }
@@ -78,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     }
     @Override
         public void onBackPressed() {
-        if (fm.getBackStackEntryCount() == 0) {
+        if (fm.getBackStackEntryCount() == 0 ) {
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.setTitle("앱을 종료 하시겠습니까?");
             // alert.setMessage("Message");

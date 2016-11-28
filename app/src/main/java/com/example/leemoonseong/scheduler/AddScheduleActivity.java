@@ -14,7 +14,7 @@ public class AddScheduleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ab = getSupportActionBar();
-        ab.setTitle("월별 보기");
+        ab.setTitle("일정 추가");
         setContentView(R.layout.activity_add_schedule);
 
 
