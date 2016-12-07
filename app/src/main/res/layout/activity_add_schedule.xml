@@ -15,6 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <EditText
+        android:id="@+id/title"
         android:layout_weight="1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -61,7 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <EditText
-            android:id="@+id/input_location"
+            android:id="@+id/location"
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -76,6 +77,7 @@
         android:layout_width="match_parent"
         android:layout_height="150dp">
         <EditText
+            android:id="@+id/memo"
             android:background="@drawable/textbox"
             android:gravity="top"
             android:inputType="textImeMultiLine"
@@ -111,6 +113,9 @@
         android:id="@+id/load"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-
+    <TextView
+        android:id="@+id/result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

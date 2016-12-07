@@ -4,20 +4,24 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.leemoonseong.scheduler.Database.MyDBHelper;
 import com.example.leemoonseong.scheduler.R;
 
 import java.io.FileNotFoundException;
@@ -34,10 +38,13 @@ import java.util.Locale;
  */
 
 public class AddScheduleActivity extends AppCompatActivity {
+    private MyDBHelper helper;
+    final static String TAG="SQLITEDBTEST";
     ActionBar ab;
     Date date1;
     Date date2;
-    Button input_image;
+    EditText title , memo , location;
+    Button input_image, save , load;
     ImageView iv;
     int s_year, s_month, s_day, s_hour, s_minute;
     int e_year, e_month, e_day, e_hour, e_minute;
@@ -45,14 +52,14 @@ public class AddScheduleActivity extends AppCompatActivity {
     int end_year=0 , end_month =0, end_day =0, end_hour =0, end_minute =0;
     TextView start;
     private final int PICK_FROM_ALBUM =1 ;
-    TextView end;
+    TextView end , result;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ab = getSupportActionBar();
         ab.setTitle("일정 추가");
         setContentView(R.layout.activity_add_schedule);
-
+        helper = new MyDBHelper(this);
         GregorianCalendar calendar = new GregorianCalendar();
         s_year = calendar.get(Calendar.YEAR);
         s_month = calendar.get(Calendar.MONTH);
@@ -70,7 +77,13 @@ public class AddScheduleActivity extends AppCompatActivity {
         end = (TextView)findViewById(R.id.end_schedule);
 
         input_image = (Button)findViewById(R.id.input_image);
+        save = (Button)findViewById(R.id.save);
+        load = (Button)findViewById(R.id.load);
         iv = (ImageView)findViewById(R.id.iv_schedule);
+        title = (EditText)findViewById(R.id.title);
+        memo = (EditText)findViewById(R.id.memo);
+        result = (TextView)findViewById(R.id.result);
+        location = (EditText)findViewById(R.id.location);
         findViewById(R.id.start_date).setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -117,6 +130,40 @@ public class AddScheduleActivity extends AppCompatActivity {
             public void onClick(View view) {
                 doTakeAlbulAction();
             }
+        });
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    String sql = String.format (
+                            "INSERT INTO schedule (_id, title, startTime, endTime, location, Memo, imageName)\n"+
+                                    "VALUES (NULL, '%s', '%s', '%s', '%s', '%s', 'image')",
+                            title.getText(),date1,date2,memo.getText(),location.getText());
+                            helper.getWritableDatabase().execSQL(sql);
+                            Toast.makeText(getApplicationContext(),"저장 완료",Toast.LENGTH_SHORT).show();
+                } catch (SQLException e) {
+                    Log.e(TAG,"Error inserting into DB");
+                }
+            }
+        });
+        load.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                result = (TextView)findViewById(R.id.result);
+                String sql = "Select * FROM schedule";
+                Cursor cursor = helper.getReadableDatabase().rawQuery(sql,null);
+                StringBuffer buffer = new StringBuffer();
+                while (cursor.moveToNext()) {
+                    buffer.append(cursor.getString(1)+"\t");
+                    buffer.append(cursor.getString(2)+"\n");
+                    buffer.append(cursor.getString(3)+"\t");
+                    buffer.append(cursor.getString(4)+"\n");
+                    buffer.append(cursor.getString(5)+"\t");
+                    buffer.append(cursor.getString(6)+"\n");
+                }
+                result.setText(buffer);
+            }
+
         });
     }
 
