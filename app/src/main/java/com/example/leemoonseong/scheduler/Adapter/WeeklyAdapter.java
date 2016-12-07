@@ -58,7 +58,7 @@ public class WeeklyAdapter extends BaseAdapter {
         // Set WeekName
         TextView dayName = (TextView) view.findViewById(R.id.tv_week_dayName);
         TextView date = (TextView) view.findViewById(R.id.tv_week_date);
-        TextView schedules= (TextView) view.findViewById(R.id.tv_week_schedule);
+        TextView schedules= (TextView) view.findViewById(R.id.tv_week_title);
         TextView scheduleTime= (TextView) view.findViewById(R.id.tv_week_time);
 
 
