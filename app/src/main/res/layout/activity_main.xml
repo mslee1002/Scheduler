@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="#ffffff"
     android:orientation="vertical"
-    tools:context="com.example.leemoonseong.scheduler.MainActivity">
+    tools:context="com.example.leemoonseong.scheduler.Activity.MainActivity">
 
     <FrameLayout
         android:id="@+id/fragment"
@@ -14,7 +14,7 @@
         android:layout_weight="2">
 
         <fragment
-            android:name="com.example.leemoonseong.scheduler.MonthlyFragment"
+            android:name="com.example.leemoonseong.scheduler.fragment.MonthlyFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </FrameLayout>

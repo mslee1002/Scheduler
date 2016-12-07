@@ -1,4 +1,4 @@
-package com.example.leemoonseong.scheduler;
+package com.example.leemoonseong.scheduler.Adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -8,18 +8,21 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.leemoonseong.scheduler.R;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import static com.example.leemoonseong.scheduler.MonthlyFragment.Month;
+//import static com.example.leemoonseong.scheduler.fragment.MonthlyFragment.Month;
 
 /**
  * Created by Hosea on 2016-11-28.
  */
 
 public class GridAdapter extends BaseAdapter {
+    private int Month;
     // 오늘에 날짜를 세팅 해준다.
     long now = System.currentTimeMillis();
     final Date date = new Date(now);

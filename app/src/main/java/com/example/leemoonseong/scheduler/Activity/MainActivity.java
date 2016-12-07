@@ -1,8 +1,7 @@
-package com.example.leemoonseong.scheduler;
+package com.example.leemoonseong.scheduler.Activity;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +11,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+
+import com.example.leemoonseong.scheduler.R;
+import com.example.leemoonseong.scheduler.fragment.DailyFragment;
+import com.example.leemoonseong.scheduler.fragment.MonthlyFragment;
+import com.example.leemoonseong.scheduler.fragment.WeeklyFragment;
 
 public class MainActivity extends AppCompatActivity {
     ActionBar ab;

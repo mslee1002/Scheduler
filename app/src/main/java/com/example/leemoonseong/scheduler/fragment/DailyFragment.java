@@ -1,10 +1,13 @@
-package com.example.leemoonseong.scheduler;
+package com.example.leemoonseong.scheduler.fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.leemoonseong.scheduler.Activity.MainActivity;
+import com.example.leemoonseong.scheduler.R;
 
 /**
  * Created by Hosea on 2016-11-28.

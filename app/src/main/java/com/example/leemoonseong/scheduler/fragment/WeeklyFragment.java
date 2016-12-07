@@ -1,23 +1,21 @@
-package com.example.leemoonseong.scheduler;
+package com.example.leemoonseong.scheduler.fragment;
 
 import android.app.Fragment;
-import android.app.ListFragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import com.example.leemoonseong.scheduler.Activity.MainActivity;
+import com.example.leemoonseong.scheduler.Adapter.WeeklyAdapter;
+import com.example.leemoonseong.scheduler.R;
+import com.example.leemoonseong.scheduler.dao.WeekItem;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 

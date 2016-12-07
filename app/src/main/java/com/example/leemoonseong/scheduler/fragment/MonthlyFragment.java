@@ -1,8 +1,7 @@
-package com.example.leemoonseong.scheduler;
+package com.example.leemoonseong.scheduler.fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +10,10 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.leemoonseong.scheduler.Adapter.GridAdapter;
+import com.example.leemoonseong.scheduler.Activity.MainActivity;
+import com.example.leemoonseong.scheduler.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

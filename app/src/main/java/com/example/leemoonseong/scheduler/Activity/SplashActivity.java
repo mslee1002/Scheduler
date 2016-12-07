@@ -1,4 +1,4 @@
-package com.example.leemoonseong.scheduler;
+package com.example.leemoonseong.scheduler.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,6 +9,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import com.example.leemoonseong.scheduler.R;
 
 public class SplashActivity extends Activity {
     public void onAttachedToWindow() {

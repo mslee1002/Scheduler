@@ -1,4 +1,4 @@
-package com.example.leemoonseong.scheduler;
+package com.example.leemoonseong.scheduler.Adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -8,23 +8,16 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.leemoonseong.scheduler.R;
+import com.example.leemoonseong.scheduler.dao.WeekItem;
+
 import java.util.ArrayList;
 import java.util.Date;
 
 /**
  * Created by Hosea on 2016-11-01.
  */
-class WeekItem {
-    private String dayName;
-    private String date;
-    private String schedules;
 
-    WeekItem(String inputName, String inputDate, String inputSchedules) {
-        dayName = inputName;
-        date = inputDate;
-        schedules = inputSchedules;
-    }
-}
 
 public class WeeklyAdapter extends BaseAdapter {
     private Context wContext;
