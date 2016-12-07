@@ -6,24 +6,33 @@ import java.util.Date;
  * Created by hosea on 2016-12-07.
  */
 public class ScheduleVO {
+    private int scheduleId;
     private String title;
     private Date startTime;
     private Date endTime;
     private String location;
-    private String Memo;
-    private String imageName;
+    private String memo;
     private String audioName;
     private String videoName;
+    private String imageName;
 
-    public ScheduleVO(String title, Date startTime, Date endTime, String location, String memo, String imageName, String audioName, String videoName) {
+    public ScheduleVO(String title, Date startTime, Date endTime, String location, String Memo, String imageName, String audioName, String videoName) {
         this.title = title;
         this.startTime = startTime;
         this.endTime = endTime;
         this.location = location;
-        Memo = memo;
+        this.memo = Memo;
         this.imageName = imageName;
         this.audioName = audioName;
         this.videoName = videoName;
+    }
+
+    public int getScheduleId() {
+        return scheduleId;
+    }
+
+    public void setScheduleId(int scheduleId) {
+        this.scheduleId = scheduleId;
     }
 
     public void setTitle(String title) {
@@ -42,8 +51,8 @@ public class ScheduleVO {
         this.location = location;
     }
 
-    public void setMemo(String memo) {
-        Memo = memo;
+    public void setMemo(String Memo) {
+        memo = Memo;
     }
 
     public void setImageName(String imageName) {
@@ -71,7 +80,7 @@ public class ScheduleVO {
     }
 
     public String getMemo() {
-        return Memo;
+        return memo;
     }
 
     public String getImageName() {

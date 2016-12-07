@@ -23,6 +23,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activity.AddScheduleActivity"/>
+        <activity android:name=".Activity.ModifyScheduleActivity"/>
+        <activity android:name=".Activity.ScheduleDetailActivity"/>
     </application>
 
 </manifest>

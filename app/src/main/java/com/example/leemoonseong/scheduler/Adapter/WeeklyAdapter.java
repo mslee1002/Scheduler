@@ -9,8 +9,10 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.leemoonseong.scheduler.R;
+import com.example.leemoonseong.scheduler.dao.ScheduleVO;
 import com.example.leemoonseong.scheduler.dao.WeekItem;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -22,9 +24,9 @@ import java.util.Date;
 public class WeeklyAdapter extends BaseAdapter {
     private Context wContext;
     private int wResource;
-    private ArrayList<WeekItem> wItems = new ArrayList<WeekItem>();
+    private ArrayList<ScheduleVO> wItems = new ArrayList<ScheduleVO>();
 
-    public WeeklyAdapter(Context context, int resource, ArrayList<WeekItem> items) {
+    public WeeklyAdapter(Context context, int resource, ArrayList<ScheduleVO> items) {
         wContext = context;
         wResource = resource;
         wItems = items;
@@ -80,9 +82,11 @@ public class WeeklyAdapter extends BaseAdapter {
         }
 
         // Set Text 01
+        ScheduleVO scheduleVO = wItems.get(i);
         date.setText(i + 5 + "");
-        schedules.setText("할일들");
-        scheduleTime.setText(new Date().toString());
+        schedules.setText(scheduleVO.getTitle());
+        DateFormat formatForDate = DateFormat.getDateInstance(DateFormat.LONG);
+        scheduleTime.setText(formatForDate.format(scheduleVO.getStartTime()));
 
         return view;
     }

@@ -1,6 +1,8 @@
 package com.example.leemoonseong.scheduler.fragment;
 
 import android.app.Fragment;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +12,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.leemoonseong.scheduler.Activity.MainActivity;
+import com.example.leemoonseong.scheduler.Activity.ScheduleDetailActivity;
 import com.example.leemoonseong.scheduler.Adapter.WeeklyAdapter;
 import com.example.leemoonseong.scheduler.R;
+import com.example.leemoonseong.scheduler.dao.ScheduleVO;
 import com.example.leemoonseong.scheduler.dao.WeekItem;
 
 import java.text.SimpleDateFormat;
@@ -23,7 +27,7 @@ import java.util.Locale;
  * Created by Hosea on 2016-11-28.
  */
 public class WeeklyFragment extends Fragment {
-    private ArrayList<WeekItem> dayList;
+    private ArrayList<ScheduleVO> dayList;
     static int Month;
     int dayNum;
     int real_day;
@@ -49,14 +53,14 @@ public class WeeklyFragment extends Fragment {
         long now = System.currentTimeMillis();
         final Date date = new Date(now);
 
-        dayList = new ArrayList<WeekItem>();
-        dayList.add(new WeekItem("월","1","ㅁ"));
-        dayList.add(new WeekItem("화","2","ㅁ"));
-        dayList.add(new WeekItem("수","3","민"));
-        dayList.add(new WeekItem("목","4","경훈이"));
-        dayList.add(new WeekItem("금","5","타조알"));
-        dayList.add(new WeekItem("토","6","그릴"));
-        dayList.add(new WeekItem("일","7","맛있다"));
+        dayList = new ArrayList<ScheduleVO>();
+        dayList.add(new ScheduleVO("밥약속",new Date(), new Date(), "신촌", "메모는 이곳에", null, null, null));
+        dayList.add(new ScheduleVO("신촌",new Date(), new Date(), "신촌", "메모는 이곳에", null, null, null));
+        dayList.add(new ScheduleVO("술약속",new Date(), new Date(), "김포", "메모는 이곳에", null, null, null));
+        dayList.add(new ScheduleVO("저녁 약속이 있던듯",new Date(), new Date(), "신촌", "메모는 이곳에", null, null, null));
+        dayList.add(new ScheduleVO("뭐 하기로 했더라?",new Date(), new Date(), "학교", "메모는 이곳에", null, null, null));
+        dayList.add(new ScheduleVO("밥약속",new Date(), new Date(), "집", "메모는 이곳에", null, null, null));
+        dayList.add(new ScheduleVO("뭐 하는날",new Date(), new Date(), "신촌", "메모는 이곳에", null, null, null));
 
         //연,월,일을 따로 저장
         final SimpleDateFormat curMonthFormat = new SimpleDateFormat("MM", Locale.KOREA);
@@ -74,6 +78,9 @@ public class WeeklyFragment extends Fragment {
                                     int position, long id) {
                 real_day = position -5 -dayNum;
                 Toast.makeText(view.getContext(),Month+"/"+real_day,Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), ScheduleDetailActivity.class);
+                intent.putExtra("scheduleId", dayList.get(position).getScheduleId());
+                startActivity(intent);
             }
         });
 
