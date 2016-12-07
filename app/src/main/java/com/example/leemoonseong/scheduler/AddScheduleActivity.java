@@ -2,16 +2,25 @@ package com.example.leemoonseong.scheduler;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -27,11 +36,14 @@ public class AddScheduleActivity extends AppCompatActivity {
     ActionBar ab;
     Date date1;
     Date date2;
+    Button input_image;
+    ImageView iv;
     int s_year, s_month, s_day, s_hour, s_minute;
     int e_year, e_month, e_day, e_hour, e_minute;
     int start_year =0 , start_month=0, start_day =0, start_hour=0, start_mitute=0;
     int end_year=0 , end_month =0, end_day =0, end_hour =0, end_minute =0;
     TextView start;
+    private final int PICK_FROM_ALBUM =1 ;
     TextView end;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +67,9 @@ public class AddScheduleActivity extends AppCompatActivity {
 
         start = (TextView)findViewById(R.id.start_schedule);
         end = (TextView)findViewById(R.id.end_schedule);
+
+        input_image = (Button)findViewById(R.id.input_image);
+        iv = (ImageView)findViewById(R.id.iv_schedule);
         findViewById(R.id.start_date).setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -96,6 +111,12 @@ public class AddScheduleActivity extends AppCompatActivity {
 //                timePickerDialog2.show();
 //            }
 //        });
+        input_image.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                doTakeAlbulAction();
+            }
+        });
     }
 
 
@@ -169,11 +190,34 @@ public class AddScheduleActivity extends AppCompatActivity {
                 start.setText("");
                 end.setText("");
             }
-
-
-
-
         }
     };
+    public void doTakeAlbulAction(){
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+        startActivityForResult(intent,PICK_FROM_ALBUM);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PICK_FROM_ALBUM) {
+            Uri mImageCaptureUri = data.getData();
+            Bitmap photo = null;
+            try {
+                photo = MediaStore.Images.Media.getBitmap(getContentResolver(), mImageCaptureUri);
+                Cursor c = getContentResolver().query(Uri.parse(mImageCaptureUri.toString()), null, null, null, null);
+                c.moveToNext();
+                final String absolutePath = c.getString(c.getColumnIndex(MediaStore.MediaColumns.DATA));
+                if (photo != null) {
+                    iv.setImageBitmap(photo);
+                }
+                Toast.makeText(getApplicationContext(), "" + photo.getByteCount(), Toast.LENGTH_SHORT).show();
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
 
