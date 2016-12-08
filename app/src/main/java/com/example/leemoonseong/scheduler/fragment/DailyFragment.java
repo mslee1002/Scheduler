@@ -51,7 +51,16 @@ public class DailyFragment extends Fragment {
     public void onResume(){
         super.onResume();
         ((MainActivity) getActivity()).setActionBarTitle("일별 보기");
-        dailyAdapter.notifyDataSetChanged();
+        if (dailyAdapter != null) {
+            Toast.makeText(getActivity(),"adapter is not null", Toast.LENGTH_SHORT).show();
+            try {
+                load_dailySchedule();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            } finally {
+                dailyAdapter.notifyDataSetChanged();
+            }
+        }
     }
 
     @Override
@@ -95,12 +104,7 @@ public class DailyFragment extends Fragment {
         long now = System.currentTimeMillis();
         final Date date = new Date(now);
 
-        dayList = new ArrayList<ScheduleVO>();
-        try {
-            load_dailySchedule();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+
 
 
         //연,월,일을 따로 저장
@@ -108,9 +112,15 @@ public class DailyFragment extends Fragment {
         //현재 날짜 텍스트뷰에 뿌려줌
 
         Month =Integer.parseInt(curMonthFormat.format(date));
-
+        dayList = new ArrayList<ScheduleVO>();
         dailyAdapter = new DailyAdapter(view.getContext(),R.layout.dailyitem, dayList);
         listView.setAdapter(dailyAdapter); // uses the view to get the context instead of getActivity().
+
+        try {
+            load_dailySchedule();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
@@ -133,6 +143,7 @@ public class DailyFragment extends Fragment {
 
     }
     public void load_dailySchedule() throws ParseException {
+        dayList.clear();
         String sql = "Select * FROM schedule";
         Cursor cursor = helper.getReadableDatabase().rawQuery(sql,null);
         StringBuffer buffer = new StringBuffer();
@@ -146,6 +157,7 @@ public class DailyFragment extends Fragment {
             dayList.add(new ScheduleVO(cursor.getInt(0),cursor.getString(1),
                     dateFormat.parse(cursor.getString(2)), dateFormat.parse(cursor.getString(3)),
                     cursor.getString(4), cursor.getString(5),cursor.getString(6)));
+            dailyAdapter.notifyDataSetChanged();
         }
     }
 }
