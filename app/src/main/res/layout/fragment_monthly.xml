@@ -12,14 +12,14 @@
             android:weightSum="1">
             <Button
                 android:background="#00000000"
-                android:id="@+id/before"
+                android:id="@+id/month_before"
                 android:textColor="#fff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/before"/>
         <TextView
 
-            android:id="@+id/tv_date"
+            android:id="@+id/tv_month_date"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:gravity="center"
@@ -29,7 +29,7 @@
             android:layout_weight="1.00" />
             <Button
                 android:background="#00000000"
-                android:id="@+id/next"
+                android:id="@+id/month_next"
                 android:textColor="#fff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

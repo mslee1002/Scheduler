@@ -30,8 +30,7 @@ public class MonthlyFragment extends Fragment {
     //동적으로 변화하는 달력을 위해 현재 연,월을 저장힉 위한 변수
 
     static Calendar mCal;
-    private int Year;
-    static int Month;
+    private int Year, Month;
     private TextView tvDate;
     GridAdapter gridAdapter;
     int dayNum;
@@ -53,7 +52,7 @@ public class MonthlyFragment extends Fragment {
         // Inflate the layout for this fragment
 
         final View view = inflater.inflate(R.layout.fragment_monthly, container, false);
-        tvDate = (TextView)view.findViewById(R.id.tv_date);
+        tvDate = (TextView)view.findViewById(R.id.tv_month_date);
         final GridView gridView = (GridView)view.findViewById(R.id.gridview);
 
 
@@ -72,11 +71,10 @@ public class MonthlyFragment extends Fragment {
         Year = Integer.parseInt(curYearFormat.format(date));
         original_month =Integer.parseInt(curMonthFormat.format(date));
 
-        Button btn_before = (Button)view.findViewById(R.id.before);
-        Button btn_next = (Button)view.findViewById(R.id.next);
+        Button btn_before = (Button)view.findViewById(R.id.month_before);
+        Button btn_next = (Button)view.findViewById(R.id.month_next);
         Month =Integer.parseInt(curMonthFormat.format(date));
         tvDate.setText(Year +"년  " + Month +"월");
-
 
         //이전 달 달력 갱신
         btn_before.setOnClickListener(new View.OnClickListener(){

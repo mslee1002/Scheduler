@@ -7,7 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.leemoonseong.scheduler.Activity.MainActivity;
@@ -31,7 +33,9 @@ public class DailyFragment extends Fragment {
         // Required empty public constructor
     }
     private ArrayList<ScheduleVO> dayList;
-    static int Month;
+    private int Year, Month, Day, Time;
+    private Date date = new Date();
+    private TextView tvDate;
     int dayNum;
     int real_day;
     private int original_month;
@@ -48,6 +52,35 @@ public class DailyFragment extends Fragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_daily, container, false);
         final ListView listView = (ListView) view.findViewById(R.id.lv_daily);
+        final SimpleDateFormat curYearFormat = new SimpleDateFormat("yyyy", Locale.KOREA);
+        final SimpleDateFormat curMonthFormat = new SimpleDateFormat("MM", Locale.KOREA);
+        final SimpleDateFormat curDayFormat = new SimpleDateFormat("dd", Locale.KOREA);
+        tvDate = (TextView)view.findViewById(R.id.tv_week_date);
+        tvDate = (TextView)view.findViewById(R.id.tv_day_date);
+        Button btn_before = (Button)view.findViewById(R.id.day_before);
+        Button btn_next = (Button)view.findViewById(R.id.day_next);
+        Year = Integer.parseInt(curYearFormat.format(date));
+        Month = Integer.parseInt(curMonthFormat.format(date));
+        Day = Integer.parseInt(curDayFormat.format(date));
+        tvDate.setText(Year +"년  " + Month +"월 " + Day +"일");
+
+
+        //이전 날 스케줄 갱신
+        btn_before.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Toast.makeText(getActivity(),"beforeClicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //다음 날 스케줄 갱신
+
+        btn_next.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Toast.makeText(getActivity(),"nextClicked", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         // 오늘에 날짜를 세팅 해준다.
         long now = System.currentTimeMillis();
@@ -62,8 +95,6 @@ public class DailyFragment extends Fragment {
         dayList.add(new ScheduleVO("밥약속",new Date(), new Date(), "집", "메모는 이곳에", null, null, null));
         dayList.add(new ScheduleVO("뭐 하는날",new Date(), new Date(), "신촌", "메모는 이곳에", null, null, null));
 
-        //연,월,일을 따로 저장
-        final SimpleDateFormat curMonthFormat = new SimpleDateFormat("MM", Locale.KOREA);
 
         //현재 날짜 텍스트뷰에 뿌려줌
         original_month =Integer.parseInt(curMonthFormat.format(date));
