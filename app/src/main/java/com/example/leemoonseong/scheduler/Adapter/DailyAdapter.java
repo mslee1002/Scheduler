@@ -68,8 +68,7 @@ public class DailyAdapter extends BaseAdapter {
         startTime.setText(formatForTime.format(scheduleVO.getStartTime()));
         endTime.setText(formatForTime.format(scheduleVO.getEndTime()));
         title.setText(scheduleVO.getTitle());
-//        location.setText(scheduleVO.getLocation());
-        location.setText("한성대학교");
+        location.setText(scheduleVO.getLocation());
 
         return view;
     }

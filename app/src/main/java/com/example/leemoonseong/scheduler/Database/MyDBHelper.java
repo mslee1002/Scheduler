@@ -22,7 +22,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE schedule (" +
-                "_id INTEGER  NOT NULL PRIMARY KEY," +
+                "_id INTEGER  NOT NULL PRIMARY KEY A ," +
                 "title TEXT  NULL," +
                 "startTime DATETIME  NULL," +
                 "endTime DATETIME  NULL," +

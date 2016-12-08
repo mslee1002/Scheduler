@@ -2,10 +2,12 @@ package com.example.leemoonseong.scheduler.Activity;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -24,7 +26,9 @@ import android.widget.Toast;
 import com.example.leemoonseong.scheduler.Database.MyDBHelper;
 import com.example.leemoonseong.scheduler.R;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -53,6 +57,8 @@ public class AddScheduleActivity extends AppCompatActivity {
     TextView start;
     private final int PICK_FROM_ALBUM =1 ;
     TextView end , result;
+    String fileName;
+    Bitmap photo;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -135,12 +141,13 @@ public class AddScheduleActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
+                    saveImage(getApplicationContext(),photo);
                     String sql = String.format (
                             "INSERT INTO schedule (_id, title, startTime, endTime, location, Memo, imageName)\n"+
-                                    "VALUES (NULL, '%s', '%s', '%s', '%s', '%s', 'image')",
-                            title.getText(),date1,date2,memo.getText(),location.getText());
+                                    "VALUES (NULL, '%s', '%s', '%s', '%s', '%s', '%s')",
+                            title.getText(),date1,date2,location.getText(),memo.getText(),fileName);
                             helper.getWritableDatabase().execSQL(sql);
-                            Toast.makeText(getApplicationContext(),"저장 완료",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),fileName +"저장 완료",Toast.LENGTH_SHORT).show();
                 } catch (SQLException e) {
                     Log.e(TAG,"Error inserting into DB");
                 }
@@ -249,7 +256,7 @@ public class AddScheduleActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PICK_FROM_ALBUM) {
             Uri mImageCaptureUri = data.getData();
-            Bitmap photo = null;
+            photo = null;
             try {
                 photo = MediaStore.Images.Media.getBitmap(getContentResolver(), mImageCaptureUri);
                 Cursor c = getContentResolver().query(Uri.parse(mImageCaptureUri.toString()), null, null, null, null);
@@ -258,14 +265,28 @@ public class AddScheduleActivity extends AppCompatActivity {
                 if (photo != null) {
                     iv.setImageBitmap(photo);
                 }
-                Toast.makeText(getApplicationContext(), "" + photo.getByteCount(), Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getApplicationContext(), "" + photo.getByteCount(), Toast.LENGTH_SHORT).show();
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
         }
     }
+    public void saveImage(Context context, Bitmap bitmap){
+        fileName = Long.toString(System.currentTimeMillis()) + ".png";
+        FileOutputStream out;
+        try {
+            out = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
 

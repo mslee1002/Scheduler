@@ -2,8 +2,10 @@ package com.example.leemoonseong.scheduler.Activity;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
@@ -22,22 +24,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.leemoonseong.scheduler.Database.MyDBHelper;
 import com.example.leemoonseong.scheduler.R;
 import com.example.leemoonseong.scheduler.dao.ScheduleVO;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
+import java.util.Date;
 
 public class ScheduleDetailActivity extends AppCompatActivity {
-    private Intent previousIntent = getIntent();
+
+    private Intent previousIntent ;
     private ScheduleVO scheduleVO;
+
     private ActionBar ab;
     private TextView title, date, scheduleStart, scheduleEnd, location, memo;
     private ImageView image;
     private Bitmap bitmap;
     private Button modify, delete;
-
+    private MyDBHelper helper;
     public void setActionBarTitle(String title) {
         getSupportActionBar().setTitle(title);
     }
@@ -47,8 +55,9 @@ public class ScheduleDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ab = getSupportActionBar();
         ab.setTitle("일정 상세보기");
+        previousIntent =getIntent();
         setContentView(R.layout.activity_schedule_detail);
-
+        helper = new MyDBHelper(this);
         //TODO: id값을 통한 데이터 받아오기필요
 //        previousIntent.getExtras().getString("scheduleId");    // id 값임
 //        scheduleVO =
@@ -81,21 +90,11 @@ public class ScheduleDetailActivity extends AppCompatActivity {
             }
         });
 
-        try {
-            title.setText(scheduleVO.getTitle());
-            date.setText(scheduleVO.getStartTime().toString());
-            scheduleStart.setText(scheduleVO.getStartTime().toString());
-            scheduleEnd.setText(scheduleVO.getEndTime().toString());
-            location.setText(scheduleVO.getLocation());
-            memo.setText(scheduleVO.getMemo());
 
-            File sd = Environment.getExternalStorageDirectory();
-            File imgfile = new File(sd, scheduleVO.getImageName());
-            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-            Bitmap bitmap = BitmapFactory.decodeFile(imgfile.getAbsolutePath(), bmOptions);
-            image.setImageBitmap(bitmap);
-        } catch (NullPointerException e) {
-            Toast.makeText(getApplicationContext(), "해당 하는 데이터를 찾지 못했습니다.", Toast.LENGTH_SHORT).show();
+        try {
+            load_dailySchedule();
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
 
 
@@ -125,5 +124,41 @@ public class ScheduleDetailActivity extends AppCompatActivity {
         // Icon for AlertDialog
 //        alert.setIcon(R.drawable.icon);
         alert.show();
+    }
+
+    public Bitmap getImageBitmap(Context context, String name){
+        try{
+            FileInputStream fis = context.openFileInput(name);
+            Bitmap bitmap = BitmapFactory.decodeStream(fis);
+            fis.close();
+            return bitmap;
+        }
+        catch(Exception e){
+        }
+        return null;
+    }
+    public void load_dailySchedule() throws ParseException {
+        Toast.makeText(getApplicationContext(),""+previousIntent.getIntExtra("scheduleId",0),Toast.LENGTH_SHORT).show();
+        String sql = "Select * FROM schedule WHRER _id = "+previousIntent.getIntExtra("scheduleId",0)+';';
+        Cursor cursor = helper.getReadableDatabase().rawQuery(sql,null);
+        StringBuffer buffer = new StringBuffer();
+        while (cursor.moveToNext()) {
+           scheduleVO = new ScheduleVO(cursor.getInt(0),cursor.getString(1),new Date(), new Date(), cursor.getString(4), cursor.getString(5),cursor.getString(6));
+
+        }
+        setContent();
+    }
+    public void setContent(){
+        try {
+            title.setText(scheduleVO.getTitle());
+            date.setText(scheduleVO.getStartTime().toString());
+            scheduleStart.setText(scheduleVO.getStartTime().toString());
+            scheduleEnd.setText(scheduleVO.getEndTime().toString());
+            location.setText(scheduleVO.getLocation());
+            memo.setText(scheduleVO.getMemo());
+            image.setImageBitmap(getImageBitmap(getApplicationContext(),scheduleVO.getImageName()));
+        } catch (NullPointerException e) {
+            Toast.makeText(getApplicationContext(), "해당 하는 데이터를 찾지 못했습니다.", Toast.LENGTH_SHORT).show();
+        }
     }
 }

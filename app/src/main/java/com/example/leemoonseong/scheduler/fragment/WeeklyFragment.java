@@ -90,13 +90,6 @@ public class WeeklyFragment extends Fragment {
         final Date date = new Date(now);
 
         dayList = new ArrayList<ScheduleVO>();
-        dayList.add(new ScheduleVO("밥약속",new Date(), new Date(), "신촌", "메모는 이곳에", null, null, null));
-        dayList.add(new ScheduleVO("신촌",new Date(), new Date(), "신촌", "메모는 이곳에", null, null, null));
-        dayList.add(new ScheduleVO("술약속",new Date(), new Date(), "김포", "메모는 이곳에", null, null, null));
-        dayList.add(new ScheduleVO("저녁 약속이 있던듯",new Date(), new Date(), "신촌", "메모는 이곳에", null, null, null));
-        dayList.add(new ScheduleVO("뭐 하기로 했더라?",new Date(), new Date(), "학교", "메모는 이곳에", null, null, null));
-        dayList.add(new ScheduleVO("밥약속",new Date(), new Date(), "집", "메모는 이곳에", null, null, null));
-        dayList.add(new ScheduleVO("뭐 하는날",new Date(), new Date(), "신촌", "메모는 이곳에", null, null, null));
 
         //현재 날짜 텍스트뷰에 뿌려줌
         original_month =Integer.parseInt(curMonthFormat.format(date));

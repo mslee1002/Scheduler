@@ -12,19 +12,18 @@ public class ScheduleVO {
     private Date endTime;
     private String location;
     private String memo;
-    private String audioName;
-    private String videoName;
     private String imageName;
 
-    public ScheduleVO(String title, Date startTime, Date endTime, String location, String Memo, String imageName, String audioName, String videoName) {
+
+    public ScheduleVO(int ScheduleId,  String title, Date startTime, Date endTime, String location, String Memo, String imageName) {
+        this.scheduleId = ScheduleId;
         this.title = title;
         this.startTime = startTime;
         this.endTime = endTime;
         this.location = location;
         this.memo = Memo;
         this.imageName = imageName;
-        this.audioName = audioName;
-        this.videoName = videoName;
+
     }
 
     public int getScheduleId() {
@@ -59,13 +58,6 @@ public class ScheduleVO {
         this.imageName = imageName;
     }
 
-    public void setAudioName(String audioName) {
-        this.audioName = audioName;
-    }
-
-    public void setVideoName(String videoName) {
-        this.videoName = videoName;
-    }
 
     public Date getStartTime() {
         return startTime;
@@ -87,13 +79,6 @@ public class ScheduleVO {
         return imageName;
     }
 
-    public String getAudioName() {
-        return audioName;
-    }
-
-    public String getVideoName() {
-        return videoName;
-    }
 
     public String getTitle() {
         return title;

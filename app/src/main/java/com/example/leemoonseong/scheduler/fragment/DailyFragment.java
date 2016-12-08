@@ -2,6 +2,7 @@ package com.example.leemoonseong.scheduler.fragment;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,12 +17,16 @@ import com.example.leemoonseong.scheduler.Activity.MainActivity;
 import com.example.leemoonseong.scheduler.Activity.ScheduleDetailActivity;
 import com.example.leemoonseong.scheduler.Adapter.DailyAdapter;
 import com.example.leemoonseong.scheduler.Adapter.WeeklyAdapter;
+import com.example.leemoonseong.scheduler.Database.MyDBHelper;
 import com.example.leemoonseong.scheduler.R;
 import com.example.leemoonseong.scheduler.dao.ScheduleVO;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
 /**
@@ -32,6 +37,7 @@ public class DailyFragment extends Fragment {
     public DailyFragment() {
         // Required empty public constructor
     }
+    MyDBHelper helper;
     private ArrayList<ScheduleVO> dayList;
     private int Year, Month, Day, Time;
     private Date date = new Date();
@@ -50,6 +56,7 @@ public class DailyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         final View view = inflater.inflate(R.layout.fragment_daily, container, false);
         final ListView listView = (ListView) view.findViewById(R.id.lv_daily);
         final SimpleDateFormat curYearFormat = new SimpleDateFormat("yyyy", Locale.KOREA);
@@ -63,7 +70,7 @@ public class DailyFragment extends Fragment {
         Month = Integer.parseInt(curMonthFormat.format(date));
         Day = Integer.parseInt(curDayFormat.format(date));
         tvDate.setText(Year +"년  " + Month +"월 " + Day +"일");
-
+        helper = new MyDBHelper(view.getContext());
 
         //이전 날 스케줄 갱신
         btn_before.setOnClickListener(new View.OnClickListener(){
@@ -87,14 +94,14 @@ public class DailyFragment extends Fragment {
         final Date date = new Date(now);
 
         dayList = new ArrayList<ScheduleVO>();
-        dayList.add(new ScheduleVO("밥약속",new Date(), new Date(), "신촌", "메모는 이곳에", null, null, null));
-        dayList.add(new ScheduleVO("신촌",new Date(), new Date(), "신촌", "메모는 이곳에", null, null, null));
-        dayList.add(new ScheduleVO("술약속",new Date(), new Date(), "김포", "메모는 이곳에", null, null, null));
-        dayList.add(new ScheduleVO("저녁 약속이 있던듯",new Date(), new Date(), "신촌", "메모는 이곳에", null, null, null));
-        dayList.add(new ScheduleVO("뭐 하기로 했더라?",new Date(), new Date(), "학교", "메모는 이곳에", null, null, null));
-        dayList.add(new ScheduleVO("밥약속",new Date(), new Date(), "집", "메모는 이곳에", null, null, null));
-        dayList.add(new ScheduleVO("뭐 하는날",new Date(), new Date(), "신촌", "메모는 이곳에", null, null, null));
+        try {
+            load_dailySchedule();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
+
+        //연,월,일을 따로 저장
 
         //현재 날짜 텍스트뷰에 뿌려줌
         original_month =Integer.parseInt(curMonthFormat.format(date));
@@ -110,6 +117,7 @@ public class DailyFragment extends Fragment {
                 real_day = position -5 -dayNum;
                 Toast.makeText(view.getContext(),Month+"/"+real_day,Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), ScheduleDetailActivity.class);
+                Toast.makeText(view.getContext(),""+dayList.get(position).getScheduleId(),Toast.LENGTH_SHORT).show();
                 intent.putExtra("scheduleId", dayList.get(position).getScheduleId());
                 startActivity(intent);
             }
@@ -122,6 +130,19 @@ public class DailyFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+    }
+    public void load_dailySchedule() throws ParseException {
+        String sql = "Select * FROM schedule";
+        Cursor cursor = helper.getReadableDatabase().rawQuery(sql,null);
+        StringBuffer buffer = new StringBuffer();
 
+        while (cursor.moveToNext()) {
+            //1. title, 2. startTime, 3 .endTime ,4. location, 5. memo,6. image
+//            Calendar t = new GregorianCalendar();
+//            SimpleDateFormat dateFormat = new  SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA);
+//            Date s_time = dateFormat.parse(cursor.getString(2)); //replace 4 with the column index
+//            Date e_time = dateFormat.parse(cursor.getString(3)); //replace 4 with the column index
+            dayList.add(new ScheduleVO(cursor.getInt(0),cursor.getString(1),new Date(), new Date(), cursor.getString(4), cursor.getString(5),cursor.getString(6)));
+        }
     }
 }
