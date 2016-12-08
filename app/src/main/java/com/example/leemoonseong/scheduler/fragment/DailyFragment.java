@@ -52,7 +52,6 @@ public class DailyFragment extends Fragment {
         super.onResume();
         ((MainActivity) getActivity()).setActionBarTitle("일별 보기");
         if (dailyAdapter != null) {
-            Toast.makeText(getActivity(),"adapter is not null", Toast.LENGTH_SHORT).show();
             try {
                 load_dailySchedule();
             } catch (ParseException e) {
@@ -126,9 +125,7 @@ public class DailyFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
                 real_day = position -5 -dayNum;
-                Toast.makeText(view.getContext(),Month+"/"+real_day,Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), ScheduleDetailActivity.class);
-                Toast.makeText(view.getContext(),""+dayList.get(position).getScheduleId(),Toast.LENGTH_SHORT).show();
                 intent.putExtra("scheduleId", dayList.get(position).getScheduleId());
                 startActivity(intent);
             }

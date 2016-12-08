@@ -77,7 +77,7 @@ public class ScheduleDetailActivity extends AppCompatActivity {
         modify.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "수정 clicked", Toast.LENGTH_SHORT).show();
+
                 Intent intent = new Intent(getApplicationContext(), ModifyScheduleActivity.class);
                 intent.putExtra("scheduleId",previousIntent.getIntExtra("scheduleId",0));
                 startActivity(intent);
@@ -117,7 +117,8 @@ public class ScheduleDetailActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // Action for 'Yes' Button
-                        Toast.makeText(getApplicationContext(), "삭제 되었습니다. (삭제 기능 구현 필요)", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "삭제 되었습니다.", Toast.LENGTH_SHORT).show();
+                        delete_dailySchedule();
                         finish();
                     }
                 });
@@ -140,8 +141,15 @@ public class ScheduleDetailActivity extends AppCompatActivity {
         }
         return null;
     }
+    public void delete_dailySchedule(){
+            String sql = String.format (
+                    "DELETE FROM schedule\n"+
+                            "WHERE _id = "+previousIntent.getIntExtra("scheduleId",0)+";");
+            helper.getWritableDatabase().execSQL(sql);
+
+    }
+
     public void load_dailySchedule() throws ParseException {
-        Toast.makeText(getApplicationContext(),""+previousIntent.getIntExtra("scheduleId",0),Toast.LENGTH_SHORT).show();
         String sql = "Select * FROM schedule WHERE _id = "+previousIntent.getIntExtra("scheduleId",0)+";";
         Cursor cursor = helper.getReadableDatabase().rawQuery(sql,null);
         SimpleDateFormat dateFormat = new  SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA);

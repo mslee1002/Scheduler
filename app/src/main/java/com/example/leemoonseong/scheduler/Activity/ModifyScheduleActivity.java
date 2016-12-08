@@ -146,7 +146,6 @@ public class ModifyScheduleActivity extends AppCompatActivity {
             public void onClick(View view) {
                 saveImage(getApplicationContext(),photo);
                 try {
-                    Toast.makeText(getApplicationContext(),fileName +"/" + previousIntent.getIntExtra("scheduleId",0),Toast.LENGTH_SHORT).show();
                     String sql = String.format (
                             "UPDATE  schedule\n"+
                                     "SET title = '%s', startTime = '%s', endTime = '%s', location = '%s', Memo = '%s', imageName = '%s'"+
@@ -248,7 +247,13 @@ public class ModifyScheduleActivity extends AppCompatActivity {
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         if (requestCode == PICK_FROM_ALBUM) {
+            if(resultCode != RESULT_OK){
+                iv.setImageBitmap(null);
+                photo = null;
+            }
+            else{
             Uri mImageCaptureUri = data.getData();
              photo = null;
             try {
@@ -259,7 +264,7 @@ public class ModifyScheduleActivity extends AppCompatActivity {
                 if (photo != null) {
                     iv.setImageBitmap(photo);
                 }
-                Toast.makeText(getApplicationContext(), "" + photo.getByteCount(), Toast.LENGTH_SHORT).show();
+
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -267,9 +272,10 @@ public class ModifyScheduleActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+        }
     }
     public void load_dailySchedule() throws ParseException {
-        Toast.makeText(getApplicationContext(),""+previousIntent.getIntExtra("scheduleId",0),Toast.LENGTH_SHORT).show();
+
         String sql = "Select * FROM schedule WHERE _id = "+previousIntent.getIntExtra("scheduleId",0)+";";
         Cursor cursor = helper.getReadableDatabase().rawQuery(sql,null);
         StringBuffer buffer = new StringBuffer();
