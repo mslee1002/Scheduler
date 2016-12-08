@@ -146,9 +146,10 @@ public class AddScheduleActivity extends AppCompatActivity {
                     String sql = String.format (
                             "INSERT INTO schedule (_id, title, startTime, endTime, location, Memo, imageName)\n"+
                                     "VALUES (NULL, '%s', '%s', '%s', '%s', '%s', '%s')",
-                            title.getText(),date1,date2,location.getText(),memo.getText(),fileName);
+                            title.getText(),s_date,e_date,location.getText(),memo.getText(),fileName);
                             helper.getWritableDatabase().execSQL(sql);
                             Toast.makeText(getApplicationContext(),fileName +"저장 완료",Toast.LENGTH_SHORT).show();
+                            AddScheduleActivity.this.finish();
                 } catch (SQLException e) {
                     Log.e(TAG,"Error inserting into DB");
                 }

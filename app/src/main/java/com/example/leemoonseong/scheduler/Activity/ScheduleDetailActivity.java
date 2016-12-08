@@ -33,7 +33,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class ScheduleDetailActivity extends AppCompatActivity {
 
@@ -71,9 +73,10 @@ public class ScheduleDetailActivity extends AppCompatActivity {
         image = (ImageView) findViewById(R.id.tv_detail_image);
         modify = (Button) findViewById(R.id.btn_detail_modify);
 
+
         modify.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                @Override
+                public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "수정 clicked", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), ModifyScheduleActivity.class);
                 intent.putExtra("scheduleId",previousIntent.getIntExtra("scheduleId",0));
@@ -141,19 +144,24 @@ public class ScheduleDetailActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(),""+previousIntent.getIntExtra("scheduleId",0),Toast.LENGTH_SHORT).show();
         String sql = "Select * FROM schedule WHERE _id = "+previousIntent.getIntExtra("scheduleId",0)+";";
         Cursor cursor = helper.getReadableDatabase().rawQuery(sql,null);
+        SimpleDateFormat dateFormat = new  SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA);
         StringBuffer buffer = new StringBuffer();
         while (cursor.moveToNext()) {
-           scheduleVO = new ScheduleVO(cursor.getInt(0),cursor.getString(1),new Date(), new Date(), cursor.getString(4), cursor.getString(5),cursor.getString(6));
-
+           scheduleVO = new ScheduleVO(cursor.getInt(0),cursor.getString(1),
+                   dateFormat.parse(cursor.getString(2)), dateFormat.parse(cursor.getString(3)),
+                   cursor.getString(4), cursor.getString(5),cursor.getString(6));
         }
         setContent();
     }
     public void setContent(){
+        SimpleDateFormat dateFormatForDate = new  SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+        SimpleDateFormat dateFormatForTime = new  SimpleDateFormat("HH:mm", Locale.KOREA);
         try {
+
             title.setText(scheduleVO.getTitle());
-            date.setText(scheduleVO.getStartTime().toString());
-            scheduleStart.setText(scheduleVO.getStartTime().toString());
-            scheduleEnd.setText(scheduleVO.getEndTime().toString());
+            date.setText(dateFormatForDate.format(scheduleVO.getStartTime()));
+            scheduleStart.setText(dateFormatForTime.format(scheduleVO.getStartTime()));
+            scheduleEnd.setText(dateFormatForTime.format(scheduleVO.getEndTime()));
             location.setText(scheduleVO.getLocation());
             memo.setText(scheduleVO.getMemo());
             image.setImageBitmap(getImageBitmap(getApplicationContext(),scheduleVO.getImageName()));

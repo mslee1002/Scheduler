@@ -55,6 +55,7 @@ public class ModifyScheduleActivity extends AppCompatActivity {
     EditText title , memo , location;
     Button input_image, save , load;
     ImageView iv;
+    String s_date, e_date;
     int s_year, s_month, s_day, s_hour, s_minute;
     int e_year, e_month, e_day, e_hour, e_minute;
     int start_year =0 , start_month=0, start_day =0, start_hour=0, start_mitute=0;
@@ -150,8 +151,10 @@ public class ModifyScheduleActivity extends AppCompatActivity {
                             "UPDATE  schedule\n"+
                                     "SET title = '%s', startTime = '%s', endTime = '%s', location = '%s', Memo = '%s', imageName = '%s'"+
                                     "WHERE _id= "+previousIntent.getIntExtra("scheduleId",0)+";",
-                            title.getText(), date1 ,date2 , location.getText(), memo.getText(),fileName) ;
+                            title.getText(), s_date ,e_date , location.getText(), memo.getText(),fileName) ;
                     helper.getWritableDatabase().execSQL(sql);
+                    Toast.makeText(getApplicationContext(),"변경 성공",Toast.LENGTH_SHORT).show();
+                    ModifyScheduleActivity.this.finish();
                 } catch (SQLException e) {
                     Log.e(TAG,"Error deleting recodes");
                 }
@@ -214,8 +217,8 @@ public class ModifyScheduleActivity extends AppCompatActivity {
             end_hour = hourOfDay;
             end_minute = minute;
             SimpleDateFormat dateFormat = new  SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA);
-            String s_date = start_year+"-"+start_month+"-"+start_day+" "+start_hour+":"+start_mitute;
-            String e_date = end_year+"-"+end_month+"-"+end_day+" "+end_hour+":"+end_minute;
+            s_date = start_year+"-"+start_month+"-"+start_day+" "+start_hour+":"+start_mitute;
+            e_date = end_year+"-"+end_month+"-"+end_day+" "+end_hour+":"+end_minute;
             try {
                 date1 = dateFormat.parse(s_date);
             } catch (ParseException e) {
@@ -277,10 +280,13 @@ public class ModifyScheduleActivity extends AppCompatActivity {
         setContent();
     }
     public void setContent(){
+        SimpleDateFormat dateFormat = new  SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA);
         try {
             title.setText(scheduleVO.getTitle());
-            start.setText(scheduleVO.getStartTime().toString());
-            end.setText(scheduleVO.getEndTime().toString());
+            start.setText(dateFormat.format(scheduleVO.getStartTime()));
+            end.setText(dateFormat.format(scheduleVO.getEndTime()));
+            s_date = dateFormat.format(scheduleVO.getStartTime());
+            e_date = dateFormat.format(scheduleVO.getEndTime());
             location.setText(scheduleVO.getLocation());
             memo.setText(scheduleVO.getMemo());
             iv.setImageBitmap(getImageBitmap(getApplicationContext(),scheduleVO.getImageName()));
