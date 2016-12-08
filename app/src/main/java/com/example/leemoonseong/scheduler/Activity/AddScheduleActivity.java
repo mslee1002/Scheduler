@@ -50,7 +50,7 @@ public class AddScheduleActivity extends AppCompatActivity {
     Date date1;
     Date date2;
     EditText title , memo , location;
-    Button input_image, save;
+    Button input_image, save , load;
     ImageView iv;
     int s_year, s_month, s_day, s_hour, s_minute;
     int e_year, e_month, e_day, e_hour, e_minute;
@@ -146,7 +146,7 @@ public class AddScheduleActivity extends AppCompatActivity {
                     String sql = String.format (
                             "INSERT INTO schedule (_id, title, startTime, endTime, location, Memo, imageName)\n"+
                                     "VALUES (NULL, '%s', '%s', '%s', '%s', '%s', '%s')",
-                            title.getText(),s_date,e_date,location.getText(),memo.getText(),fileName);
+                            title.getText(),date1,date2,location.getText(),memo.getText(),fileName);
                             helper.getWritableDatabase().execSQL(sql);
                             Toast.makeText(getApplicationContext(),fileName +"저장 완료",Toast.LENGTH_SHORT).show();
                 } catch (SQLException e) {

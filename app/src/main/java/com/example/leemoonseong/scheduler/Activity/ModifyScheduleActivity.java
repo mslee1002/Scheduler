@@ -29,6 +29,7 @@ import com.example.leemoonseong.scheduler.dao.ScheduleVO;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -46,6 +47,8 @@ public class ModifyScheduleActivity extends AppCompatActivity {
     private Intent previousIntent;
     private ScheduleVO scheduleVO;
     final static String TAG="SQLITEDBTEST";
+    String fileName;
+    Bitmap photo;
     ActionBar ab;
     Date date1;
     Date date2;
@@ -140,16 +143,19 @@ public class ModifyScheduleActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                saveImage(getApplicationContext(),photo);
                 try {
+                    Toast.makeText(getApplicationContext(),fileName +"/" + previousIntent.getIntExtra("scheduleId",0),Toast.LENGTH_SHORT).show();
                     String sql = String.format (
-                            "INSERT INTO schedule (_id, title, startTime, endTime, location, Memo, imageName)\n"+
-                                    "VALUES (NULL, '%s', '%s', '%s', '%s', '%s', 'image')",
-                            title.getText(),date1,date2,memo.getText(),location.getText());
-                            helper.getWritableDatabase().execSQL(sql);
-                            Toast.makeText(getApplicationContext(),"저장 완료",Toast.LENGTH_SHORT).show();
+                            "UPDATE  schedule\n"+
+                                    "SET title = '%s', startTime = '%s', endTime = '%s', location = '%s', Memo = '%s', imageName = '%s'"+
+                                    "WHERE _id= "+previousIntent.getIntExtra("scheduleId",0)+";",
+                            title.getText(), date1 ,date2 , location.getText(), memo.getText(),fileName) ;
+                    helper.getWritableDatabase().execSQL(sql);
                 } catch (SQLException e) {
-                    Log.e(TAG,"Error inserting into DB");
+                    Log.e(TAG,"Error deleting recodes");
                 }
+
             }
         });
         try {
@@ -241,7 +247,7 @@ public class ModifyScheduleActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PICK_FROM_ALBUM) {
             Uri mImageCaptureUri = data.getData();
-            Bitmap photo = null;
+             photo = null;
             try {
                 photo = MediaStore.Images.Media.getBitmap(getContentResolver(), mImageCaptureUri);
                 Cursor c = getContentResolver().query(Uri.parse(mImageCaptureUri.toString()), null, null, null, null);
@@ -278,6 +284,7 @@ public class ModifyScheduleActivity extends AppCompatActivity {
             location.setText(scheduleVO.getLocation());
             memo.setText(scheduleVO.getMemo());
             iv.setImageBitmap(getImageBitmap(getApplicationContext(),scheduleVO.getImageName()));
+             photo = getImageBitmap(getApplicationContext(),scheduleVO.getImageName());
         } catch (NullPointerException e) {
             Toast.makeText(getApplicationContext(), "해당 하는 데이터를 찾지 못했습니다.", Toast.LENGTH_SHORT).show();
         }
@@ -292,6 +299,17 @@ public class ModifyScheduleActivity extends AppCompatActivity {
         catch(Exception e){
         }
         return null;
+    }
+    public void saveImage(Context context, Bitmap bitmap){
+        fileName = Long.toString(System.currentTimeMillis()) + ".png";
+        FileOutputStream out;
+        try {
+            out = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 
