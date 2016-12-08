@@ -35,6 +35,7 @@ public class WeeklyFragment extends Fragment {
     private int Year, Month, Day, Time;
     private Date date = new Date();
     private TextView tvDate;
+    WeeklyAdapter weeklyAdapter;
     Calendar calendar = new GregorianCalendar();
     int dayNum;
     int real_day;
@@ -47,6 +48,7 @@ public class WeeklyFragment extends Fragment {
     public void onResume(){
         super.onResume();
         ((MainActivity) getActivity()).setActionBarTitle("주별 보기");
+        weeklyAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -96,7 +98,7 @@ public class WeeklyFragment extends Fragment {
 
         Month =Integer.parseInt(curMonthFormat.format(date));
 
-        WeeklyAdapter weeklyAdapter = new WeeklyAdapter(view.getContext(),R.layout.weeklyitem, dayList);
+        weeklyAdapter = new WeeklyAdapter(view.getContext(),R.layout.weeklyitem, dayList);
         listView.setAdapter(weeklyAdapter); // uses the view to get the context instead of getActivity().
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

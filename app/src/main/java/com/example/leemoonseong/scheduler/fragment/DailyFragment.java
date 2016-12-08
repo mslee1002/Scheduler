@@ -29,10 +29,12 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
+
 /**
  * Created by Hosea on 2016-11-28.
  */
 public class DailyFragment extends Fragment {
+    DailyAdapter dailyAdapter;
 
     public DailyFragment() {
         // Required empty public constructor
@@ -44,12 +46,12 @@ public class DailyFragment extends Fragment {
     private TextView tvDate;
     int dayNum;
     int real_day;
-    private int original_month;
 
     @Override
     public void onResume(){
         super.onResume();
         ((MainActivity) getActivity()).setActionBarTitle("일별 보기");
+        dailyAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -104,11 +106,10 @@ public class DailyFragment extends Fragment {
         //연,월,일을 따로 저장
 
         //현재 날짜 텍스트뷰에 뿌려줌
-        original_month =Integer.parseInt(curMonthFormat.format(date));
 
         Month =Integer.parseInt(curMonthFormat.format(date));
 
-        DailyAdapter dailyAdapter = new DailyAdapter(view.getContext(),R.layout.dailyitem, dayList);
+        dailyAdapter = new DailyAdapter(view.getContext(),R.layout.dailyitem, dayList);
         listView.setAdapter(dailyAdapter); // uses the view to get the context instead of getActivity().
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

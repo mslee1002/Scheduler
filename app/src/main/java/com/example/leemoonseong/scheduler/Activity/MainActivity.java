@@ -18,6 +18,7 @@ import com.example.leemoonseong.scheduler.fragment.MonthlyFragment;
 import com.example.leemoonseong.scheduler.fragment.WeeklyFragment;
 
 public class MainActivity extends AppCompatActivity {
+    private String currentFragment = "monthly";
     ActionBar ab;
     final MonthlyFragment monthlyFragment = new MonthlyFragment();
     final WeeklyFragment weeklyFragment = new WeeklyFragment();
@@ -74,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.add_schedule:
                 Intent intent =new Intent(getApplicationContext(), AddScheduleActivity.class);
+                intent.putExtra("currentFragment",currentFragment);
                 startActivity(intent);
             default:
                 return super.onOptionsItemSelected(item);

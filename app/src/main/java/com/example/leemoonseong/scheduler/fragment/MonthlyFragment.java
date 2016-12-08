@@ -44,6 +44,7 @@ public class MonthlyFragment extends Fragment {
     public void onResume(){
         super.onResume();
         ((MainActivity) getActivity()).setActionBarTitle("월별 보기");
+        gridAdapter.notifyDataSetChanged();
     }
 
     @Override

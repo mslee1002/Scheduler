@@ -42,6 +42,7 @@ import java.util.Locale;
  */
 
 public class AddScheduleActivity extends AppCompatActivity {
+    Intent previousIntent = getIntent();
     private MyDBHelper helper;
     final static String TAG="SQLITEDBTEST";
     String s_date;
