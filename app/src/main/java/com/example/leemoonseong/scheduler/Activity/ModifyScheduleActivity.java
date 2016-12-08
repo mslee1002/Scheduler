@@ -2,10 +2,12 @@ package com.example.leemoonseong.scheduler.Activity;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -23,7 +25,9 @@ import android.widget.Toast;
 
 import com.example.leemoonseong.scheduler.Database.MyDBHelper;
 import com.example.leemoonseong.scheduler.R;
+import com.example.leemoonseong.scheduler.dao.ScheduleVO;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
@@ -39,6 +43,8 @@ import java.util.Locale;
 
 public class ModifyScheduleActivity extends AppCompatActivity {
     private MyDBHelper helper;
+    private Intent previousIntent;
+    private ScheduleVO scheduleVO;
     final static String TAG="SQLITEDBTEST";
     ActionBar ab;
     Date date1;
@@ -57,8 +63,9 @@ public class ModifyScheduleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ab = getSupportActionBar();
-        ab.setTitle("일정 추가");
+        ab.setTitle("일정 편집");
         setContentView(R.layout.activity_add_schedule);
+        previousIntent = getIntent();
         helper = new MyDBHelper(this);
         GregorianCalendar calendar = new GregorianCalendar();
         s_year = calendar.get(Calendar.YEAR);
@@ -78,7 +85,6 @@ public class ModifyScheduleActivity extends AppCompatActivity {
 
         input_image = (Button)findViewById(R.id.input_image);
         save = (Button)findViewById(R.id.save);
-        load = (Button)findViewById(R.id.load);
         iv = (ImageView)findViewById(R.id.iv_schedule);
         title = (EditText)findViewById(R.id.title);
         memo = (EditText)findViewById(R.id.memo);
@@ -146,25 +152,11 @@ public class ModifyScheduleActivity extends AppCompatActivity {
                 }
             }
         });
-        load.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                result = (TextView)findViewById(R.id.result);
-                String sql = "Select * FROM schedule";
-                Cursor cursor = helper.getReadableDatabase().rawQuery(sql,null);
-                StringBuffer buffer = new StringBuffer();
-                while (cursor.moveToNext()) {
-                    buffer.append(cursor.getString(1)+"\t");
-                    buffer.append(cursor.getString(2)+"\n");
-                    buffer.append(cursor.getString(3)+"\t");
-                    buffer.append(cursor.getString(4)+"\n");
-                    buffer.append(cursor.getString(5)+"\t");
-                    buffer.append(cursor.getString(6)+"\n");
-                }
-                result.setText(buffer);
-            }
-
-        });
+        try {
+            load_dailySchedule();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -266,6 +258,40 @@ public class ModifyScheduleActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+    public void load_dailySchedule() throws ParseException {
+        Toast.makeText(getApplicationContext(),""+previousIntent.getIntExtra("scheduleId",0),Toast.LENGTH_SHORT).show();
+        String sql = "Select * FROM schedule WHERE _id = "+previousIntent.getIntExtra("scheduleId",0)+";";
+        Cursor cursor = helper.getReadableDatabase().rawQuery(sql,null);
+        StringBuffer buffer = new StringBuffer();
+        while (cursor.moveToNext()) {
+            scheduleVO = new ScheduleVO(cursor.getInt(0),cursor.getString(1),new Date(), new Date(), cursor.getString(4), cursor.getString(5),cursor.getString(6));
+
+        }
+        setContent();
+    }
+    public void setContent(){
+        try {
+            title.setText(scheduleVO.getTitle());
+            start.setText(scheduleVO.getStartTime().toString());
+            end.setText(scheduleVO.getEndTime().toString());
+            location.setText(scheduleVO.getLocation());
+            memo.setText(scheduleVO.getMemo());
+            iv.setImageBitmap(getImageBitmap(getApplicationContext(),scheduleVO.getImageName()));
+        } catch (NullPointerException e) {
+            Toast.makeText(getApplicationContext(), "해당 하는 데이터를 찾지 못했습니다.", Toast.LENGTH_SHORT).show();
+        }
+    }
+    public Bitmap getImageBitmap(Context context, String name){
+        try{
+            FileInputStream fis = context.openFileInput(name);
+            Bitmap bitmap = BitmapFactory.decodeStream(fis);
+            fis.close();
+            return bitmap;
+        }
+        catch(Exception e){
+        }
+        return null;
     }
 }
 

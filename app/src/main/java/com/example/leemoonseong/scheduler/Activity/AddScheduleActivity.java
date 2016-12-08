@@ -84,7 +84,6 @@ public class AddScheduleActivity extends AppCompatActivity {
 
         input_image = (Button)findViewById(R.id.input_image);
         save = (Button)findViewById(R.id.save);
-        load = (Button)findViewById(R.id.load);
         iv = (ImageView)findViewById(R.id.iv_schedule);
         title = (EditText)findViewById(R.id.title);
         memo = (EditText)findViewById(R.id.memo);

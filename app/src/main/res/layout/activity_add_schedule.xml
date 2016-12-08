@@ -3,116 +3,126 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffff"
     android:orientation="vertical"
-    tools:context="com.example.leemoonseong.scheduler.Activity.MainActivity"
-    android:background="#ffffff" >
+    tools:context="com.example.leemoonseong.scheduler.Activity.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    <TextView
-        android:text="제목"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <EditText
-        android:id="@+id/title"
-        android:layout_weight="1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="제목" />
+
+        <EditText
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-     <TextView
-         android:id="@+id/start_schedule"
-         android:layout_weight="1"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content" />
         <Button
-            android:text="시작시간"
             android:id="@+id/start_date"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="시작시간" />
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    <TextView
-        android:id="@+id/end_schedule"
-        android:layout_weight="1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <Button
-        android:text="종료시간"
-        android:id="@+id/end_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
         <TextView
-            android:text="장소"
+            android:id="@+id/start_schedule"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/end_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="종료시간" />
+
+        <TextView
+            android:id="@+id/end_schedule"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="장소" />
+
         <EditText
             android:id="@+id/location"
-            android:layout_weight="1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
     </LinearLayout>
 
     <TextView
-        android:text="메모"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="메모" />
+
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="150dp">
+        android:layout_height="150dp"
+        android:orientation="horizontal">
+
         <EditText
             android:id="@+id/memo"
+            android:layout_width="266dp"
+            android:layout_height="match_parent"
             android:background="@drawable/textbox"
             android:gravity="top"
-            android:inputType="textImeMultiLine"
-            android:layout_width="266dp"
-            android:layout_height="match_parent" />
+            android:inputType="textImeMultiLine" />
+
         <LinearLayout
-            android:layout_weight="1"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
             <ImageView
                 android:id="@+id/iv_schedule"
-                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
             <Button
-                android:text="사진선택"
                 android:id="@+id/input_image"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="사진선택" />
 
         </LinearLayout>
     </LinearLayout>
 
     <Button
-        android:text="Save"
         android:id="@+id/save"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="저장하기" />
 
-    <Button
-        android:text="Load"
-        android:id="@+id/load"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
     <TextView
         android:id="@+id/result"
         android:layout_width="wrap_content"

@@ -76,7 +76,7 @@ public class ScheduleDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "수정 clicked", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), ModifyScheduleActivity.class);
-//                intent.
+                intent.putExtra("scheduleId",previousIntent.getIntExtra("scheduleId",0));
                 startActivity(intent);
                 ScheduleDetailActivity.this.finish();
             }

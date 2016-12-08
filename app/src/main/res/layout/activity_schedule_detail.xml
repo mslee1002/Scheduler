@@ -97,7 +97,7 @@
 
             <!--메모-->
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
@@ -112,13 +112,16 @@
                     android:layout_height="wrap_content"
                     android:text="메모" />
 
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
                 <ImageView
                     android:id="@+id/tv_detail_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="50dp" />
             </LinearLayout>
-
 
         </LinearLayout>
     </ScrollView>
