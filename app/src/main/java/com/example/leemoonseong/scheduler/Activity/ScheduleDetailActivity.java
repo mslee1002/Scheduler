@@ -139,7 +139,7 @@ public class ScheduleDetailActivity extends AppCompatActivity {
     }
     public void load_dailySchedule() throws ParseException {
         Toast.makeText(getApplicationContext(),""+previousIntent.getIntExtra("scheduleId",0),Toast.LENGTH_SHORT).show();
-        String sql = "Select * FROM schedule WHRER _id = "+previousIntent.getIntExtra("scheduleId",0)+';';
+        String sql = "Select * FROM schedule WHERE _id = "+previousIntent.getIntExtra("scheduleId",0)+";";
         Cursor cursor = helper.getReadableDatabase().rawQuery(sql,null);
         StringBuffer buffer = new StringBuffer();
         while (cursor.moveToNext()) {
