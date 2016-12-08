@@ -44,11 +44,13 @@ import java.util.Locale;
 public class AddScheduleActivity extends AppCompatActivity {
     private MyDBHelper helper;
     final static String TAG="SQLITEDBTEST";
+    String s_date;
+    String e_date;
     ActionBar ab;
     Date date1;
     Date date2;
     EditText title , memo , location;
-    Button input_image, save , load;
+    Button input_image, save;
     ImageView iv;
     int s_year, s_month, s_day, s_hour, s_minute;
     int e_year, e_month, e_day, e_hour, e_minute;
@@ -144,32 +146,13 @@ public class AddScheduleActivity extends AppCompatActivity {
                     String sql = String.format (
                             "INSERT INTO schedule (_id, title, startTime, endTime, location, Memo, imageName)\n"+
                                     "VALUES (NULL, '%s', '%s', '%s', '%s', '%s', '%s')",
-                            title.getText(),date1,date2,location.getText(),memo.getText(),fileName);
+                            title.getText(),s_date,e_date,location.getText(),memo.getText(),fileName);
                             helper.getWritableDatabase().execSQL(sql);
                             Toast.makeText(getApplicationContext(),fileName +"저장 완료",Toast.LENGTH_SHORT).show();
                 } catch (SQLException e) {
                     Log.e(TAG,"Error inserting into DB");
                 }
             }
-        });
-        load.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                result = (TextView)findViewById(R.id.result);
-                String sql = "Select * FROM schedule";
-                Cursor cursor = helper.getReadableDatabase().rawQuery(sql,null);
-                StringBuffer buffer = new StringBuffer();
-                while (cursor.moveToNext()) {
-                    buffer.append(cursor.getString(1)+"\t");
-                    buffer.append(cursor.getString(2)+"\n");
-                    buffer.append(cursor.getString(3)+"\t");
-                    buffer.append(cursor.getString(4)+"\n");
-                    buffer.append(cursor.getString(5)+"\t");
-                    buffer.append(cursor.getString(6)+"\n");
-                }
-                result.setText(buffer);
-            }
-
         });
     }
 
@@ -222,8 +205,8 @@ public class AddScheduleActivity extends AppCompatActivity {
             end_hour = hourOfDay;
             end_minute = minute;
             SimpleDateFormat dateFormat = new  SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA);
-            String s_date = start_year+"-"+start_month+"-"+start_day+" "+start_hour+":"+start_mitute;
-            String e_date = end_year+"-"+end_month+"-"+end_day+" "+end_hour+":"+end_minute;
+            s_date = start_year+"-"+start_month+"-"+start_day+" "+start_hour+":"+start_mitute;
+            e_date = end_year+"-"+end_month+"-"+end_day+" "+end_hour+":"+end_minute;
             try {
                 date1 = dateFormat.parse(s_date);
             } catch (ParseException e) {

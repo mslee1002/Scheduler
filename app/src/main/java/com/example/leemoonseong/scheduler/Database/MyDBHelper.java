@@ -24,8 +24,8 @@ public class MyDBHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE schedule (" +
                 "_id INTEGER  NOT NULL PRIMARY KEY," +
                 "title TEXT  NULL," +
-                "startTime DATETIME  NULL," +
-                "endTime DATETIME  NULL," +
+                "startTime TEXT NULL," +
+                "endTime TEXT NULL," +
                 "location TEXT  NULL," +
                 "Memo TEXT  NULL," +
                 "imageName TEXT  NULL"+

@@ -137,12 +137,14 @@ public class DailyFragment extends Fragment {
         StringBuffer buffer = new StringBuffer();
 
         while (cursor.moveToNext()) {
-            //1. title, 2. startTime, 3 .endTime ,4. location, 5. memo,6. image
+//            1. title, 2. startTime, 3 .endTime ,4. location, 5. memo,6. image
 //            Calendar t = new GregorianCalendar();
-//            SimpleDateFormat dateFormat = new  SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA);
+            SimpleDateFormat dateFormat = new  SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA);
 //            Date s_time = dateFormat.parse(cursor.getString(2)); //replace 4 with the column index
 //            Date e_time = dateFormat.parse(cursor.getString(3)); //replace 4 with the column index
-            dayList.add(new ScheduleVO(cursor.getInt(0),cursor.getString(1),new Date(), new Date(), cursor.getString(4), cursor.getString(5),cursor.getString(6)));
+            dayList.add(new ScheduleVO(cursor.getInt(0),cursor.getString(1),
+                    dateFormat.parse(cursor.getString(2)), dateFormat.parse(cursor.getString(3)),
+                    cursor.getString(4), cursor.getString(5),cursor.getString(6)));
         }
     }
 }
