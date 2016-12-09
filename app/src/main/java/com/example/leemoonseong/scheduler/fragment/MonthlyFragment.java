@@ -21,12 +21,14 @@ import com.example.leemoonseong.scheduler.Activity.MainActivity;
 import com.example.leemoonseong.scheduler.Adapter.MonthlyAdapter;
 import com.example.leemoonseong.scheduler.Database.MyDBHelper;
 import com.example.leemoonseong.scheduler.R;
+import com.example.leemoonseong.scheduler.comparator;
 import com.example.leemoonseong.scheduler.dao.ScheduleVO;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
 
@@ -233,6 +235,7 @@ public class MonthlyFragment extends Fragment {
         }
     }
     public void load_dailySchedule() throws ParseException {
+        comparator comp =new comparator();
         dayListForMonth.clear();
         String sql = "Select * FROM schedule ";
         Cursor cursor = helper.getReadableDatabase().rawQuery(sql,null);
@@ -256,6 +259,7 @@ public class MonthlyFragment extends Fragment {
                 dayListForMonth.add(new ScheduleVO(cursor.getInt(0), cursor.getString(1),
                         dateFormat.parse(cursor.getString(2)), dateFormat.parse(cursor.getString(3)),
                         cursor.getString(4), cursor.getString(5), cursor.getString(6)));
+                Collections.sort(dayListForMonth,comp);
                 monthlyAdapter.notifyDataSetChanged();
             }
             else{
