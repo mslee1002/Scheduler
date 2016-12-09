@@ -140,15 +140,16 @@ public class DailyFragment extends Fragment {
 
     }
     public void load_dailySchedule() throws ParseException {
+        SimpleDateFormat dateFormat = new  SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA);
         dayList.clear();
-        String sql = "Select * FROM schedule";
+        String sql = "Select * FROM schedule where startTime = " + dateFormat.format(new Date()) + ";";
         Cursor cursor = helper.getReadableDatabase().rawQuery(sql,null);
         StringBuffer buffer = new StringBuffer();
 
         while (cursor.moveToNext()) {
 //            1. title, 2. startTime, 3 .endTime ,4. location, 5. memo,6. image
 //            Calendar t = new GregorianCalendar();
-            SimpleDateFormat dateFormat = new  SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA);
+
 //            Date s_time = dateFormat.parse(cursor.getString(2)); //replace 4 with the column index
 //            Date e_time = dateFormat.parse(cursor.getString(3)); //replace 4 with the column index
             dayList.add(new ScheduleVO(cursor.getInt(0),cursor.getString(1),
