@@ -2,12 +2,19 @@ package com.example.leemoonseong.scheduler.Activity;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.NotificationCompat;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -34,9 +41,8 @@ public class MainActivity extends AppCompatActivity {
         ab = getSupportActionBar();
         ab.setTitle("월별 보기");
         setContentView(R.layout.activity_main);
-
-
     }
+
 
 
     protected void switchFragment(int id) {
