@@ -270,7 +270,5 @@ public class AddScheduleActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
-
 }
 
