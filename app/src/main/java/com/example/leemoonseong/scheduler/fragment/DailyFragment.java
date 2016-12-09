@@ -19,12 +19,16 @@ import com.example.leemoonseong.scheduler.Adapter.DailyAdapter;
 import com.example.leemoonseong.scheduler.Adapter.WeeklyAdapter;
 import com.example.leemoonseong.scheduler.Database.MyDBHelper;
 import com.example.leemoonseong.scheduler.R;
+import com.example.leemoonseong.scheduler.comparator;
 import com.example.leemoonseong.scheduler.dao.ScheduleVO;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
@@ -183,6 +187,7 @@ public class DailyFragment extends Fragment {
     }
     public void load_dailySchedule() throws ParseException {
         dayList.clear();
+        comparator comp = new comparator();
         String sql = "Select * FROM schedule ";
         Cursor cursor = helper.getReadableDatabase().rawQuery(sql,null);
         StringBuffer buffer = new StringBuffer();
@@ -205,7 +210,9 @@ public class DailyFragment extends Fragment {
                 dayList.add(new ScheduleVO(cursor.getInt(0), cursor.getString(1),
                         dateFormat.parse(cursor.getString(2)), dateFormat.parse(cursor.getString(3)),
                         cursor.getString(4), cursor.getString(5), cursor.getString(6)));
+                Collections.sort(dayList,comp);
                 dailyAdapter.notifyDataSetChanged();
+
             }
             else{
 
@@ -214,3 +221,4 @@ public class DailyFragment extends Fragment {
         }
     }
 }
+
