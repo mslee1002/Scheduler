@@ -275,12 +275,14 @@ public class ModifyScheduleActivity extends AppCompatActivity {
         }
     }
     public void load_dailySchedule() throws ParseException {
-
+        SimpleDateFormat dateFormat = new  SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA);
         String sql = "Select * FROM schedule WHERE _id = "+previousIntent.getIntExtra("scheduleId",0)+";";
         Cursor cursor = helper.getReadableDatabase().rawQuery(sql,null);
         StringBuffer buffer = new StringBuffer();
         while (cursor.moveToNext()) {
-            scheduleVO = new ScheduleVO(cursor.getInt(0),cursor.getString(1),new Date(), new Date(), cursor.getString(4), cursor.getString(5),cursor.getString(6));
+            scheduleVO = new ScheduleVO(cursor.getInt(0),cursor.getString(1),
+                         dateFormat.parse(cursor.getString(2)), dateFormat.parse(cursor.getString(3)),
+                         cursor.getString(4), cursor.getString(5),cursor.getString(6));
 
         }
         setContent();
