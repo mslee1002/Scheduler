@@ -188,7 +188,7 @@ public class MonthlyFragment extends Fragment {
         }
 
         setCalendarDate(mCal.get(Calendar.MONTH) + 1);
-        gridAdapter = new GridAdapter(view.getContext(),dayList,mCal);
+        gridAdapter = new GridAdapter(view.getContext(),dayList,mCal ,original_month);
         gridView.setAdapter(gridAdapter); // uses the view to get the context instead of getActivity().
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -259,7 +259,6 @@ public class MonthlyFragment extends Fragment {
                 monthlyAdapter.notifyDataSetChanged();
             }
             else{
-                dayListForMonth.clear();
                 monthlyAdapter.notifyDataSetChanged();
             }
         }

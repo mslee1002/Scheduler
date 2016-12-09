@@ -29,9 +29,7 @@ public class GridAdapter extends BaseAdapter {
     private final List<String> list;
     private final LayoutInflater inflater;
     private Calendar mCal;
-    int Year;
-    final SimpleDateFormat curMonthFormat = new SimpleDateFormat("MM", Locale.KOREA);
-    int original_month =Integer.parseInt(curMonthFormat.format(date));
+    private int original_month;
     /**
      * 생성자
      *
@@ -39,7 +37,8 @@ public class GridAdapter extends BaseAdapter {
      * @param list
      */
 
-    public GridAdapter(Context context, List<String> list , Calendar cal) {
+    public GridAdapter(Context context, List<String> list , Calendar cal ,int original_month) {
+        this.original_month = original_month;
         this.mCal = cal;
         this.list = list;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -79,13 +78,13 @@ public class GridAdapter extends BaseAdapter {
         //해당 날짜 텍스트 컬러,배경 변경
         SimpleDateFormat this_month = new SimpleDateFormat("MM", Locale.KOREA);
         mCal = Calendar.getInstance();
+        Month = mCal.get(Calendar.MONTH)+1;
         //오늘 day 가져
         Integer today = mCal.get(Calendar.DAY_OF_MONTH);
         String sToday = String.valueOf(today);
-        if (sToday.equals(getItem(position)) && Month ==original_month ) { //오늘 day 텍스트 컬러 변경
+        if (sToday.equals(getItem(position)) && Month == original_month ) { //오늘 day 텍스트 컬러 변경
             String strColor1 = "#FF0000";
             holder.tvItemGridView.setTextColor(Color.parseColor(strColor1));
-
         }
         else{
             String strColor2 = "#000000";
