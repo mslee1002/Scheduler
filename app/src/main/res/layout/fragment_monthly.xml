@@ -49,6 +49,7 @@
         >
     </GridView>
     <ListView
+        android:id="@+id/lv_monthly"
         android:background="#FF00FF"
         android:layout_weight="1"
         android:layout_width="match_parent"
