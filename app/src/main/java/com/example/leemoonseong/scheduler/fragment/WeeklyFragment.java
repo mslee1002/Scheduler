@@ -34,10 +34,10 @@ import java.util.Locale;
  */
 public class WeeklyFragment extends Fragment {
     private ArrayList<ScheduleVO> dayList;
-    private ArrayList<ScheduleVO> dayListForMonth;
     private int Year, Month, Day, Time;
     private Date date = new Date();
     private TextView tvDate;
+    private String sDate, eDate;
     int db_year, db_month, db_day;
     MyDBHelper helper;
     WeeklyAdapter weeklyAdapter;
@@ -68,7 +68,6 @@ public class WeeklyFragment extends Fragment {
         final SimpleDateFormat curYearFormat = new SimpleDateFormat("yyyy", Locale.KOREA);
         final SimpleDateFormat curMonthFormat = new SimpleDateFormat("MM", Locale.KOREA);
         final SimpleDateFormat curDayFormat = new SimpleDateFormat("dd", Locale.KOREA);
-        dayListForMonth = new ArrayList<>();
         helper = new MyDBHelper(view.getContext());
         tvDate = (TextView)view.findViewById(R.id.tv_week_date);
         Button btn_before = (Button)view.findViewById(R.id.week_before);
@@ -77,6 +76,8 @@ public class WeeklyFragment extends Fragment {
         cal.setTime(new Date());
         sWeek = new GregorianCalendar(Locale.KOREA);
         eWeek = new GregorianCalendar(Locale.KOREA);
+
+        dayList = new ArrayList<ScheduleVO>();
 
         int month = (calendar.get(Calendar.MONTH))+1;
 
@@ -113,10 +114,10 @@ public class WeeklyFragment extends Fragment {
                 sWeek.add(Calendar.DAY_OF_YEAR, - (calendar.get(Calendar.DAY_OF_WEEK)) + 1);
 
                 eWeek.setTime(cal.getTime());
-                eWeek.add(Calendar.DAY_OF_YEAR, (7- (calendar.get(Calendar.DAY_OF_WEEK))));
+                eWeek.add(Calendar.DAY_OF_YEAR, (7- (calendar.get(Calendar.DAY_OF_WEEK)) + 1));
 
-                String sDate = fm.format(sWeek.getTime());
-                String eDate = fm.format(eWeek.getTime());
+                sDate = fm.format(sWeek.getTime());
+                eDate = fm.format(eWeek.getTime());
 
                 Toast.makeText(getActivity(),sDate + " 에서 " + eDate, Toast.LENGTH_SHORT).show();
                 try {
@@ -147,10 +148,10 @@ public class WeeklyFragment extends Fragment {
                 sWeek.add(Calendar.DAY_OF_YEAR, - (calendar.get(Calendar.DAY_OF_WEEK)) + 1);
 
                 eWeek.setTime(cal.getTime());
-                eWeek.add(Calendar.DAY_OF_YEAR, (7- (calendar.get(Calendar.DAY_OF_WEEK))));
+                eWeek.add(Calendar.DAY_OF_YEAR, (7- (calendar.get(Calendar.DAY_OF_WEEK)) + 1));
 
-                String sDate = fm.format(sWeek.getTime());
-                String eDate = fm.format(eWeek.getTime());
+                sDate = fm.format(sWeek.getTime());
+                eDate = fm.format(eWeek.getTime());
 
                 Toast.makeText(getActivity(),sDate + " 에서 " + eDate, Toast.LENGTH_SHORT).show();
                 try {
@@ -165,7 +166,6 @@ public class WeeklyFragment extends Fragment {
         long now = System.currentTimeMillis();
         final Date date = new Date(now);
 
-        dayList = new ArrayList<ScheduleVO>();
 
         //현재 날짜 텍스트뷰에 뿌려줌
         original_month =Integer.parseInt(curMonthFormat.format(date));
@@ -195,38 +195,22 @@ public class WeeklyFragment extends Fragment {
     }
 
     public void load_dailySchedule() throws ParseException {
-        dayListForMonth.clear();
-        SimpleDateFormat sfm = new SimpleDateFormat("yyyy-MM-dd");
-        String sql = "Select * FROM schedule WHERE startTime >" + sfm.format(sWeek) + "AND endTime < " + sfm.format(eWeek) + ";";
-        Toast.makeText(getActivity(),sql, Toast.LENGTH_SHORT).show();
+        dayList.clear();
+        SimpleDateFormat sfm = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        String sql = "Select * FROM schedule;";
         Cursor cursor = helper.getReadableDatabase().rawQuery(sql,null);
-        StringBuffer buffer = new StringBuffer();
-        final SimpleDateFormat curYearFormat = new SimpleDateFormat("yyyy", Locale.KOREA);
-        final SimpleDateFormat curMonthFormat = new SimpleDateFormat("MM", Locale.KOREA);
-        final SimpleDateFormat curDayFormat = new SimpleDateFormat("dd", Locale.KOREA);
-
-        Toast.makeText(getActivity(),sql, Toast.LENGTH_SHORT).show();
-
         while (cursor.moveToNext()) {
 //            1. title, 2. startTime, 3 .endTime ,4. location, 5. memo,6. image
 //            Calendar t = new GregorianCalendar();
             SimpleDateFormat dateFormat = new  SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA);
-
-            db_year = Integer.parseInt(curYearFormat.format(dateFormat.parse(cursor.getString(2))));
-            db_month = Integer.parseInt(curMonthFormat.format(dateFormat.parse(cursor.getString(2))));
-            db_day = Integer.parseInt(curDayFormat.format(dateFormat.parse(cursor.getString(2))));
-            String check = db_year+"-"+db_month+"-"+db_day;
-            if(check.equals(Year+"-"+Month+"-"+real_day)) {
+            if (sDate.compareTo(cursor.getString(2)) < 0 && eDate.compareTo(cursor.getString(2)) >= 0)
+            {
 
 //            Date s_time = dateFormat.parse(cursor.getString(2)); //replace 4 with the column index
 //            Date e_time = dateFormat.parse(cursor.getString(3)); //replace 4 with the column index
-                dayListForMonth.add(new ScheduleVO(cursor.getInt(0), cursor.getString(1),
+                dayList.add(new ScheduleVO(cursor.getInt(0), cursor.getString(1),
                         dateFormat.parse(cursor.getString(2)), dateFormat.parse(cursor.getString(3)),
                         cursor.getString(4), cursor.getString(5), cursor.getString(6)));
-                weeklyAdapter.notifyDataSetChanged();
-            }
-            else{
-                dayListForMonth.clear();
                 weeklyAdapter.notifyDataSetChanged();
             }
         }
