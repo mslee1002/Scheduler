@@ -27,6 +27,7 @@ import com.example.leemoonseong.scheduler.fragment.DailyFragment;
 import com.example.leemoonseong.scheduler.fragment.MonthlyFragment;
 import com.example.leemoonseong.scheduler.fragment.WeeklyFragment;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -64,13 +65,19 @@ public class MainActivity extends AppCompatActivity {
         String sql = "Select * FROM schedule;";
         StringBuffer sb = new StringBuffer();
         Cursor cursor = helper.getReadableDatabase().rawQuery(sql,null);
+        Date tempDate = new Date();
         while (cursor.moveToNext()) {
 //            1. title, 2. startTime, 3 .endTime ,4. location, 5. memo,6. image
 //            Calendar t = new GregorianCalendar();
             SimpleDateFormat dateFormat = new  SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA);
-            if (cursor.getString(2).startsWith(today))
+            try {
+                tempDate = dateFormat.parse(cursor.getString(2));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            if (dateFormat.format(tempDate).startsWith(today))
             {
-                sb.append(" " + cursor.getString(2));
+                sb.append(" " + cursor.getString(1));
             }
         }
         if (sb.toString().equals("")) {
@@ -124,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     @Override
-        public void onBackPressed() {
+    public void onBackPressed() {
         if (fm.getBackStackEntryCount() == 0 ) {
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.setTitle("앱을 종료 하시겠습니까?");
