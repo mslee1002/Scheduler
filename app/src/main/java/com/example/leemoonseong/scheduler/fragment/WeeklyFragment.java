@@ -38,6 +38,7 @@ public class WeeklyFragment extends Fragment {
     private Date date = new Date();
     private TextView tvDate;
     private String sDate, eDate;
+    Date date1 ,date2;
     int db_year, db_month, db_day;
     MyDBHelper helper;
     WeeklyAdapter weeklyAdapter;
@@ -86,16 +87,16 @@ public class WeeklyFragment extends Fragment {
         sWeek = new GregorianCalendar(Locale.KOREA);
         eWeek = new GregorianCalendar(Locale.KOREA);
         sWeek.setTime(cal.getTime());
-        sWeek.add(Calendar.DAY_OF_YEAR, - (calendar.get(Calendar.DAY_OF_WEEK)) + 1);
+        sWeek.add(Calendar.DAY_OF_YEAR, - (cal.get(Calendar.DAY_OF_WEEK)) + 1);
         eWeek.setTime(cal.getTime());
-        eWeek.add(Calendar.DAY_OF_YEAR, (7- (calendar.get(Calendar.DAY_OF_WEEK)) + 1));
+        eWeek.add(Calendar.DAY_OF_YEAR, (7- (cal.get(Calendar.DAY_OF_WEEK)) + 1));
 
         dayList = new ArrayList<ScheduleVO>();
 
-        int month = (calendar.get(Calendar.MONTH))+1;
+        int month = (cal.get(Calendar.MONTH))+1;
 
-        int weekStart = ((calendar.get(Calendar.DAY_OF_MONTH)+1)
-                - (calendar.get(Calendar.DAY_OF_WEEK)));
+        int weekStart = ((cal.get(Calendar.DAY_OF_MONTH)+1)
+                - (cal.get(Calendar.DAY_OF_WEEK)));
         int weekEnd = weekStart + 6;
 
         SimpleDateFormat fm = new SimpleDateFormat(
@@ -104,10 +105,19 @@ public class WeeklyFragment extends Fragment {
 
         sDate = fm.format(sWeek.getTime());
         eDate = fm.format(eWeek.getTime());
-
+        try {
+            date1 = fm.parse(sDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        try {
+            date2 = fm.parse(eDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 //        tvDate.setText(strDate);
 
-        tvDate.setText(month + "월 " + calendar.get(Calendar.WEEK_OF_MONTH)+"째 주");
+        tvDate.setText(month + "월 " + cal.get(Calendar.WEEK_OF_MONTH)+"째 주");
 //        tvDate.setText(weekStart);
 
 
@@ -127,16 +137,25 @@ public class WeeklyFragment extends Fragment {
                 int month = (cal.get(Calendar.MONTH))+1;
                 tvDate.setText(month + "월 " + cal.get(Calendar.WEEK_OF_MONTH)+"째 주");
                 sWeek.setTime(cal.getTime());
-                sWeek.add(Calendar.DAY_OF_YEAR, - (calendar.get(Calendar.DAY_OF_WEEK)) + 1);
+                sWeek.add(Calendar.DAY_OF_YEAR, - (cal.get(Calendar.DAY_OF_WEEK)) + 1);
 
 
                 eWeek.setTime(cal.getTime());
-                eWeek.add(Calendar.DAY_OF_YEAR, (7- (calendar.get(Calendar.DAY_OF_WEEK)) + 1));
-
+                eWeek.add(Calendar.DAY_OF_YEAR, (7- (cal.get(Calendar.DAY_OF_WEEK)) + 1));
 
 
                 sDate = fm.format(sWeek.getTime());
                 eDate = fm.format(eWeek.getTime());
+                try {
+                    date1 = fm.parse(sDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    date2 = fm.parse(eDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 try {
                     load_dailySchedule();
                 } catch (ParseException e) {
@@ -167,15 +186,24 @@ public class WeeklyFragment extends Fragment {
                 tvDate.setText(month + "월 " + cal.get(Calendar.WEEK_OF_MONTH)+"째 주");
 
                 sWeek.setTime(cal.getTime());
-                sWeek.add(Calendar.DAY_OF_YEAR, - (calendar.get(Calendar.DAY_OF_WEEK)) + 1);
+                sWeek.add(Calendar.DAY_OF_YEAR, - (cal.get(Calendar.DAY_OF_WEEK)) + 1);
 
                 eWeek.setTime(cal.getTime());
-                eWeek.add(Calendar.DAY_OF_YEAR, (7- (calendar.get(Calendar.DAY_OF_WEEK)) + 1));
-
+                eWeek.add(Calendar.DAY_OF_YEAR, (7- (cal.get(Calendar.DAY_OF_WEEK)) + 1));
 
 
                 sDate = fm.format(sWeek.getTime());
                 eDate = fm.format(eWeek.getTime());
+                try {
+                    date1 = fm.parse(sDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    date2 = fm.parse(eDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
                 Toast.makeText(getActivity(),sDate + " 에서 " + eDate, Toast.LENGTH_SHORT).show();
                 try {
@@ -232,7 +260,7 @@ public class WeeklyFragment extends Fragment {
 //            1. title, 2. startTime, 3 .endTime ,4. location, 5. memo,6. image
 //            Calendar t = new GregorianCalendar();
             SimpleDateFormat dateFormat = new  SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA);
-            if (sDate.compareTo(cursor.getString(2)) < 0 && eDate.compareTo(cursor.getString(2)) >= 0)
+            if ((dateFormat.parse(cursor.getString(2))).after(date1) && date2.after(dateFormat.parse(cursor.getString(2))) )
             {
 
 //            Date s_time = dateFormat.parse(cursor.getString(2)); //replace 4 with the column index
